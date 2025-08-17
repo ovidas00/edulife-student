@@ -12,6 +12,7 @@ import {
   Phone,
   MapPin,
   Clock,
+  User,
   ChevronRight,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -109,11 +110,8 @@ export default function RootLayout({ children }) {
                     alt={student?.name}
                     className="rounded-full"
                   />
-                  <AvatarFallback className="bg-white text-blue-600 font-bold">
-                    {student?.name
-                      ?.split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+                  <AvatarFallback className="bg-white text-blue-600">
+                    <User className="h-8 w-8" />
                   </AvatarFallback>
                 </Avatar>
               </div>
@@ -247,7 +245,7 @@ export default function RootLayout({ children }) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto min-h-[100%]">{children}</div>
+          <div className="max-w-7xl mx-auto">{children}</div>
 
           {/* Footer Content */}
           <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">

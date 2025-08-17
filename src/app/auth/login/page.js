@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle } from "lucide-react";
 import api from "@/lib/api";
+import { User } from "lucide-react";
 import AppDialog from "@/components/ui/AppDialog";
 
 export default function LoginPage() {
@@ -72,11 +73,8 @@ export default function LoginPage() {
                       alt={student?.name}
                       className="rounded-full"
                     />
-                    <AvatarFallback className="bg-white text-blue-600 font-bold">
-                      {student?.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                    <AvatarFallback className="bg-white text-blue-600">
+                      <User className="h-8 w-8" />
                     </AvatarFallback>
                   </Avatar>
                 </div>
