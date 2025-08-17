@@ -218,10 +218,11 @@ export default function RootLayout({ children }) {
                 <Menu size={20} className="text-gray-100 dark:text-gray-300" />
               </button>
               <div className="flex items-center space-x-3">
-                <img
+                <Image
                   src="/icon-500x150-yellow.png"
                   alt="Logo"
-                  className="h-12"
+                  width={160}
+                  height={120}
                 />
               </div>
             </div>
@@ -258,8 +259,8 @@ export default function RootLayout({ children }) {
                       src="/logo-500x500-yellow.png"
                       alt="Logo"
                       className="p-2"
-                      width={150}
-                      height={150}
+                      width={100}
+                      height={100}
                     />
                   </div>
                   <div>
