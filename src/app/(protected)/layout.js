@@ -88,52 +88,55 @@ export default function RootLayout({ children }) {
         />
       )}
 
-      {/* Drawer */}
       <aside
         className={`
-    h-full w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-lg
+    h-full w-72 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 border-r border-gray-200 dark:border-gray-700
     flex flex-col
-    fixed top-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
+    fixed top-0 left-0 z-50 transform transition-all duration-300 ease-in-out
     lg:relative lg:transform-none lg:z-10
-    ${isDrawerOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+    ${
+      isDrawerOpen
+        ? "translate-x-0 shadow-xl"
+        : "-translate-x-full lg:translate-x-0"
+    }
   `}
       >
         {/* Profile Section */}
-        <div className="p-4 backdrop-blur-sm border-b border-gray-100 dark:border-gray-700">
-          <div className="flex flex-col items-center space-y-4">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md">
+          <div className="flex flex-col items-center space-y-3">
             {/* Profile Avatar */}
-            <div className="relative">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 p-0.5">
-                <Avatar className="h-full w-full">
+            <div className="relative group">
+              <div className="h-20 w-20 rounded-full bg-gradient-to-br from-blue-200 to-purple-200 p-0.5 shadow-md group-hover:from-blue-300 group-hover:to-purple-300 transition-all duration-300">
+                <Avatar className="h-full w-full border-2 border-white dark:border-gray-800">
                   <AvatarImage
                     src={student?.profilePicture || "/placeholder.svg"}
                     alt={student?.name}
-                    className="rounded-full"
+                    className="rounded-full object-cover"
                   />
-                  <AvatarFallback className="bg-white text-blue-600">
+                  <AvatarFallback className="bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400">
                     <User className="h-8 w-8" />
                   </AvatarFallback>
                 </Avatar>
               </div>
               {student?.isActive && (
-                <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-white bg-green-400 flex items-center justify-center">
-                  <CheckCircle className="h-3 w-3 text-white" />
+                <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-white dark:border-gray-800 bg-green-500 flex items-center justify-center shadow-sm">
+                  <CheckCircle className="h-3.5 w-3.5 text-white" />
                 </div>
               )}
             </div>
 
             {/* Student Info */}
             <div className="text-center space-y-1">
-              <h3 className="font-bold text-gray-800 dark:text-gray-100">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg">
                 {student?.name}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {student?.batch} • {student?.session}
               </p>
             </div>
 
             {/* Current Rank */}
-            <div className="w-full p-2 bg-gradient-to-r from-green-100 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+            <div className="w-full py-2 px-3 bg-gradient-to-r from-green-50 to-blue-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
@@ -141,7 +144,7 @@ export default function RootLayout({ children }) {
                     Current Rank
                   </span>
                 </div>
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-green-600 dark:from-blue-400 dark:to-green-400 bg-clip-text text-transparent">
                   #{myRank}
                 </span>
               </div>
@@ -151,7 +154,7 @@ export default function RootLayout({ children }) {
 
         {/* Navigation Menu */}
         <nav className="flex-1 p-4 overflow-y-auto">
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {menuItems.map((item, index) => {
               const isActive = pathname === item.href;
               return (
@@ -162,9 +165,11 @@ export default function RootLayout({ children }) {
                 flex items-center space-x-3 p-3 rounded-xl
                 ${
                   isActive
-                    ? "bg-green-800 text-bold shadow-lg text-white dark:bg-green-700 dark:text-green-200"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400"
-                } transition-colors duration-200 group`}
+                    ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-green-600 dark:hover:text-green-400"
+                } 
+                transition-all duration-300 group
+              `}
                     onClick={() => {
                       if (
                         typeof window !== "undefined" &&
@@ -174,26 +179,35 @@ export default function RootLayout({ children }) {
                       }
                     }}
                   >
-                    <item.icon
-                      size={20}
-                      className={`
-                  ${
-                    isActive
-                      ? "text-white dark:text-green-200"
-                      : "text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400"
-                  }
-                `}
-                    />
-                    <span className="font-semibold">{item.label}</span>
+                    <div
+                      className={`p-2 rounded-lg ${
+                        isActive
+                          ? "bg-white/20"
+                          : "bg-gray-100 dark:bg-gray-700 group-hover:bg-green-100 dark:group-hover:bg-green-900/30"
+                      }`}
+                    >
+                      <item.icon
+                        size={20}
+                        className={`
+                    ${
+                      isActive
+                        ? "text-white"
+                        : "text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400"
+                    }
+                  `}
+                      />
+                    </div>
+                    <span className="font-medium">{item.label}</span>
                     <ChevronRight
                       size={16}
                       className={`
                   ml-auto
                   ${
                     isActive
-                      ? "text-white dark:text-green-200 opacity-100"
+                      ? "text-white opacity-100"
                       : "text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100"
-                  } transition-opacity
+                  } 
+                  transition-all duration-300
                 `}
                     />
                   </a>
@@ -206,12 +220,12 @@ export default function RootLayout({ children }) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="bg-green-700 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30">
+        <header className="bg-gradient-to-r from-green-800 to-green-700 dark:from-gray-800 dark:to-gray-900 border-b border-green-800 dark:border-gray-700 sticky top-0 z-30">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center space-x-4">
               <button
                 onClick={toggleDrawer}
-                className="lg:hidden p-2 cursor-pointer rounded-md hover:bg-green-600 dark:hover:bg-gray-700 transition-colors"
+                className="lg:hidden p-2 cursor-pointer rounded-full hover:bg-green-600 dark:hover:bg-gray-700 transition-colors"
               >
                 <Menu size={20} className="text-gray-100 dark:text-gray-300" />
               </button>
