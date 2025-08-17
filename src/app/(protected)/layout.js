@@ -89,18 +89,15 @@ export default function RootLayout({ children }) {
       {/* Drawer */}
       <aside
         className={`
-              h-full w-64 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg
-              flex flex-col
-              fixed top-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
-              lg:relative lg:transform-none lg:z-10
-              ${
-                isDrawerOpen
-                  ? "translate-x-0"
-                  : "-translate-x-full lg:translate-x-0"
-              }
-            `}
+    h-full w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-lg
+    flex flex-col
+    fixed top-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
+    lg:relative lg:transform-none lg:z-10
+    ${isDrawerOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+  `}
       >
-        <div className="p-4 backdrop-blur-sm border-b border-gray-100">
+        {/* Profile Section */}
+        <div className="p-4 backdrop-blur-sm border-b border-gray-100 dark:border-gray-700">
           <div className="flex flex-col items-center space-y-4">
             {/* Profile Avatar */}
             <div className="relative">
@@ -113,7 +110,7 @@ export default function RootLayout({ children }) {
                   />
                   <AvatarFallback className="bg-white text-blue-600 font-bold">
                     {student?.name
-                      .split(" ")
+                      ?.split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
@@ -128,28 +125,31 @@ export default function RootLayout({ children }) {
 
             {/* Student Info */}
             <div className="text-center space-y-1">
-              <h3 className="font-bold text-gray-800">{student?.name}</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="font-bold text-gray-800 dark:text-gray-100">
+                {student?.name}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {student?.batch} • {student?.session}
               </p>
             </div>
 
             {/* Current Rank */}
-            <div className="w-full p-2 bg-gradient-to-r from-green-100 to-gray-100 rounded-lg border border-gray-100">
+            <div className="w-full p-2 bg-gradient-to-r from-green-100 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-yellow-500" />
-                  <span className="text-sm font-semibold text-gray-700">
+                  <Trophy className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Current Rank
                   </span>
                 </div>
-                <span className="text-lg font-bold text-blue-600">
+                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   #{myRank}
                 </span>
               </div>
             </div>
           </div>
         </div>
+
         {/* Navigation Menu */}
         <nav className="flex-1 p-4 overflow-y-auto">
           <ul className="space-y-2">
@@ -159,11 +159,13 @@ export default function RootLayout({ children }) {
                 <li key={index}>
                   <a
                     href={item.href}
-                    className={`flex items-center space-x-3 p-3 rounded-xl ${
-                      isActive
-                        ? "bg-green-800 text-bold shadow-lg text-white dark:bg-gray-700 dark:text-green-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400"
-                    } transition-colors duration-200 group`}
+                    className={`
+                flex items-center space-x-3 p-3 rounded-xl
+                ${
+                  isActive
+                    ? "bg-green-800 text-bold shadow-lg text-white dark:bg-green-700 dark:text-green-200"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400"
+                } transition-colors duration-200 group`}
                     onClick={() => {
                       if (
                         typeof window !== "undefined" &&
@@ -175,20 +177,25 @@ export default function RootLayout({ children }) {
                   >
                     <item.icon
                       size={20}
-                      className={
-                        isActive
-                          ? "text-white dark:text-green-400"
-                          : "text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400"
-                      }
+                      className={`
+                  ${
+                    isActive
+                      ? "text-white dark:text-green-200"
+                      : "text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400"
+                  }
+                `}
                     />
                     <span className="font-semibold">{item.label}</span>
                     <ChevronRight
                       size={16}
-                      className={`ml-auto ${
-                        isActive
-                          ? "text-white dark:text-green-400 opacity-100"
-                          : "text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100"
-                      } transition-opacity`}
+                      className={`
+                  ml-auto
+                  ${
+                    isActive
+                      ? "text-white dark:text-green-200 opacity-100"
+                      : "text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100"
+                  } transition-opacity
+                `}
                     />
                   </a>
                 </li>
@@ -253,7 +260,7 @@ export default function RootLayout({ children }) {
                     />
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black text-green-600/100">
+                    <h3 className="text-3xl font-black text-green-600/100 text-left">
                       EDULIFE IT INSTITUTE
                     </h3>
                     <p className="text-slate-400 text-sm text-left font-medium">
