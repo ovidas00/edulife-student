@@ -116,11 +116,11 @@ const Assignments = () => {
         setOpen={() => setIsSubmissionModalOpen(false)}
         title={`Submit Assignment: ${selectedAssignment?.title}`}
         className="min-w-full lg:min-w-4xl"
-        bgColor="bg-gray-100"
+        bgColor="bg-gray-100 dark:bg-gray-800"
       >
-        <div>
+        <div className="dark:text-white">
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-            <Play className="h-5 w-5 text-primary" />
+            <Play className="h-5 w-5 text-primary dark:text-primary-foreground" />
             Assignment Instructions Video
           </h3>
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
@@ -135,9 +135,9 @@ const Assignments = () => {
           </div>
 
           {/* Assignment Description */}
-          <div className="p-4 bg-muted/30 rounded-lg">
+          <div className="p-4 bg-muted/30 dark:bg-gray-700/50 rounded-lg">
             <h4 className="font-bold mb-2">Assignment Description:</h4>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground dark:text-gray-300">
               {selectedAssignment?.description}
             </p>
           </div>
@@ -147,12 +147,12 @@ const Assignments = () => {
               {/* Submission Form */}
               <div className="space-y-4 px-2 mt-4">
                 <h3 className="text-lg font-bold flex items-center gap-2">
-                  <Upload className="h-5 w-5 text-green-600" />
+                  <Upload className="h-5 w-5 text-green-600 dark:text-green-400" />
                   Submit Your Video
                 </h3>
 
                 <div className="space-y-3 mb-4">
-                  <label className="text-sm font-semibold">
+                  <label className="text-sm font-semibold dark:text-gray-300">
                     Choose Submission Method
                   </label>
                   <div className="flex gap-2 mt-1">
@@ -161,8 +161,8 @@ const Assignments = () => {
                       onClick={() => setSubmissionType("youtube")}
                       className={`flex items-center gap-2 rounded-lg ${
                         submissionType === "youtube"
-                          ? "bg-green-700 text-white"
-                          : "border border-gray-300"
+                          ? "bg-green-700 dark:bg-green-600 text-white"
+                          : "border border-gray-300 dark:border-gray-600 dark:text-gray-300"
                       }`}
                     >
                       <Play className="h-4 w-4" />
@@ -173,8 +173,8 @@ const Assignments = () => {
                       onClick={() => setSubmissionType("facebook")}
                       className={`flex items-center gap-2 rounded-lg ${
                         submissionType === "facebook"
-                          ? "bg-green-700 text-white"
-                          : "border border-gray-300"
+                          ? "bg-green-700 dark:bg-green-600 text-white"
+                          : "border border-gray-300 dark:border-gray-600 dark:text-gray-300"
                       }`}
                     >
                       <Share2 className="h-4 w-4" />
@@ -186,7 +186,7 @@ const Assignments = () => {
 
               {submissionType === "youtube" && (
                 <div className="space-y-3 px-2">
-                  <label className="text-sm font-semibold">
+                  <label className="text-sm font-semibold dark:text-gray-300">
                     YouTube Video Link
                   </label>
                   <input
@@ -194,14 +194,14 @@ const Assignments = () => {
                     value={submissionUrl}
                     onChange={(e) => setSubmissionUrl(e.target.value)}
                     placeholder="https://www.youtube.com/watch?v=..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                 </div>
               )}
 
               {submissionType === "facebook" && (
                 <div className="space-y-3 px-2">
-                  <label className="text-sm font-semibold">
+                  <label className="text-sm font-semibold dark:text-gray-300">
                     Facebook Group Post Link
                   </label>
                   <input
@@ -209,12 +209,12 @@ const Assignments = () => {
                     value={facebookPostLink}
                     onChange={(e) => setFacebookPostLink(e.target.value)}
                     placeholder="https://www.facebook.com/groups/your-group/posts/..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
                     <div className="flex items-start gap-2">
-                      <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <div className="text-sm text-blue-800">
+                      <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                      <div className="text-sm text-blue-800 dark:text-blue-200">
                         <p className="font-semibold mb-1">
                           How to get Facebook post link:
                         </p>
@@ -238,7 +238,7 @@ const Assignments = () => {
                       ? !submissionUrl
                       : !facebookPostLink
                   }
-                  className="bg-green-700 cursor-pointer hover:bg-green-600 text-white rounded-lg"
+                  className="bg-green-700 dark:bg-green-600 cursor-pointer hover:bg-green-600 dark:hover:bg-green-500 text-white rounded-lg"
                 >
                   <Send className="h-4 w-4 mr-2" />
                   {submissionMutation.isPending ? (
@@ -252,7 +252,7 @@ const Assignments = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  className="cursor-pointer hover:bg-gray-100 rounded-lg"
+                  className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg dark:text-white"
                   onClick={() => {
                     setSelectedAssignment(null);
                     setSubmissionUrl("");
@@ -269,69 +269,69 @@ const Assignments = () => {
         </div>
       </AppDialog>
 
-      <div className="space-y-6 p-6">
+      <div className="space-y-6 p-6 dark:bg-gray-900">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 bg-green-200/30 rounded-xl">
-            <BookOpen className="h-6 w-6 text-primary" />
+          <div className="p-3 bg-green-200/30 dark:bg-green-800/30 rounded-xl">
+            <BookOpen className="h-6 w-6 text-primary dark:text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-black text-card-foreground">
+          <h1 className="text-3xl font-black text-card-foreground dark:text-white">
             Assignments
           </h1>
         </div>
 
         {/* Assignment Summary Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-lg">
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-700 shadow-lg">
             <CardContent className="p-4 text-center">
               <div className="p-2 bg-blue-500 rounded-lg w-fit mx-auto mb-2">
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
-              <div className="text-2xl font-black text-blue-600">
+              <div className="text-2xl font-black text-blue-600 dark:text-blue-400">
                 {assignmentsStats.totalAssignment}
               </div>
-              <div className="text-sm font-semibold text-blue-600">
+              <div className="text-sm font-semibold text-blue-600 dark:text-blue-300">
                 Total Assignments
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 shadow-lg">
+          <Card className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-yellow-200 dark:border-yellow-700 shadow-lg">
             <CardContent className="p-4 text-center">
               <div className="p-2 bg-yellow-500 rounded-lg w-fit mx-auto mb-2">
                 <Clock className="h-6 w-6 text-white" />
               </div>
-              <div className="text-2xl font-black text-yellow-600">
+              <div className="text-2xl font-black text-yellow-600 dark:text-yellow-400">
                 {assignmentsStats.pending}
               </div>
-              <div className="text-sm font-semibold text-yellow-600">
+              <div className="text-sm font-semibold text-yellow-600 dark:text-yellow-300">
                 Pending
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg">
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-700 shadow-lg">
             <CardContent className="p-4 text-center">
               <div className="p-2 bg-green-500 rounded-lg w-fit mx-auto mb-2">
                 <CheckCircle className="h-6 w-6 text-white" />
               </div>
-              <div className="text-2xl font-black text-green-600">
+              <div className="text-2xl font-black text-green-600 dark:text-green-400">
                 {assignmentsStats.submitted}
               </div>
-              <div className="text-sm font-semibold text-green-600">
+              <div className="text-sm font-semibold text-green-600 dark:text-green-300">
                 Submitted
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-red-50 to-rose-50 border-red-200 shadow-lg">
+          <Card className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 border-red-200 dark:border-red-700 shadow-lg">
             <CardContent className="p-4 text-center">
               <div className="p-2 bg-red-500 rounded-lg w-fit mx-auto mb-2">
                 <XCircle className="h-6 w-6 text-white" />
               </div>
-              <div className="text-2xl font-black text-red-600">
+              <div className="text-2xl font-black text-red-600 dark:text-red-400">
                 {assignmentsStats.notSubmitted}
               </div>
-              <div className="text-sm font-semibold text-red-600">
+              <div className="text-sm font-semibold text-red-600 dark:text-red-300">
                 Not Submitted
               </div>
             </CardContent>
@@ -339,10 +339,10 @@ const Assignments = () => {
         </div>
 
         {/* Assignment List */}
-        <Card className="shadow-lg border-border/50 border-gray-200">
+        <Card className="shadow-lg border-border/50 border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xl font-black">
-              <BookOpen className="h-6 w-6 text-green-700" />
+            <CardTitle className="flex items-center gap-2 text-xl font-black dark:text-white">
+              <BookOpen className="h-6 w-6 text-green-700 dark:text-green-400" />
               Assignment List
             </CardTitle>
           </CardHeader>
@@ -354,24 +354,24 @@ const Assignments = () => {
                     key={assignment._id}
                     className={`p-4 rounded-xl border-2 transition-all duration-200 ${
                       assignment.status === "submitted"
-                        ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200"
+                        ? "bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-700"
                         : assignment.status === "overdue" ||
                           assignment.status === "not_submitted"
-                        ? "bg-gradient-to-r from-red-50 to-rose-50 border-red-200"
+                        ? "bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 border-red-200 dark:border-red-700"
                         : assignment.status === "pending" && !assignment.url
-                        ? "bg-gradient-to-r from-blue-50 to-blue-50 border-blue-200"
-                        : "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200"
+                        ? "bg-gradient-to-r from-blue-50 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/30 border-blue-200 dark:border-blue-700"
+                        : "bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-yellow-200 dark:border-yellow-700"
                     }`}
                   >
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2">
                       <div className="flex-1">
-                        <h3 className="font-bold text-lg text-card-foreground mb-1">
+                        <h3 className="font-bold text-lg text-card-foreground dark:text-white mb-1">
                           {assignment.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground font-medium mb-2">
+                        <p className="text-sm text-muted-foreground dark:text-gray-400 font-medium mb-2">
                           {assignment.subject}
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground dark:text-gray-400 line-clamp-2">
                           {assignment.description}
                         </p>
                       </div>
@@ -379,12 +379,12 @@ const Assignments = () => {
                         ""
                       ) : (
                         <div
-                          className={`rounded-full shadow text-sm px-3 text-white font-semibold ${
+                          className={`rounded-full shadow text-sm px-3 py-1 text-white font-semibold w-fit sm:w-auto ${
                             assignment.status === "submitted"
-                              ? "bg-green-500"
+                              ? "bg-green-500 dark:bg-green-600"
                               : assignment.status === "pending"
-                              ? "bg-yellow-500"
-                              : "bg-red-700"
+                              ? "bg-yellow-500 dark:bg-yellow-600"
+                              : "bg-red-700 dark:bg-red-600"
                           }`}
                         >
                           {assignment.status === "submitted"
@@ -396,11 +396,11 @@ const Assignments = () => {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center justify-between">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 text-sm">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
+                          <Calendar className="h-4 w-4 text-muted-foreground dark:text-gray-500 flex-shrink-0" />
+                          <span className="font-medium dark:text-gray-300">
                             Due:{" "}
                             {new Date(assignment.dueDate).toLocaleString(
                               "en-US",
@@ -414,27 +414,27 @@ const Assignments = () => {
                         </div>
                         {assignment.submittedDate && (
                           <div className="flex items-center gap-1">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
-                            <span className="font-medium text-green-600">
+                            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+                            <span className="font-medium text-green-600 dark:text-green-400">
                               Submitted: {assignment.submittedDate}
                             </span>
                           </div>
                         )}
                         {assignment.status === "submitted" && (
                           <div className="flex items-center gap-1">
-                            <Trophy className="h-4 w-4 text-secondary" />
-                            <span className="font-bold text-secondary">
+                            <Trophy className="h-4 w-4 text-secondary dark:text-secondary-foreground flex-shrink-0" />
+                            <span className="font-bold text-secondary dark:text-secondary-foreground">
                               {getStatus(assignment.mark)}
                             </span>
                           </div>
                         )}
                       </div>
 
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 self-end sm:self-auto">
                         {assignment.status === "pending" && !assignment.url && (
                           <Button
                             size="sm"
-                            className="bg-green-600 hover:bg-green-500 text-white cursor-pointer"
+                            className="bg-green-600 dark:bg-green-700 hover:bg-green-500 dark:hover:bg-green-600 text-white cursor-pointer"
                             onClick={() => {
                               setIsViewMode(false);
                               setSelectedAssignment(assignment);
@@ -443,7 +443,9 @@ const Assignments = () => {
                             disabled={!!assignment.url}
                           >
                             <Upload className="h-4 w-4 mr-1" />
-                            Submit
+                            <span className="sr-only sm:not-sr-only">
+                              Submit
+                            </span>
                           </Button>
                         )}
                         <Button
@@ -454,10 +456,10 @@ const Assignments = () => {
                             setSelectedAssignment(assignment);
                             setIsSubmissionModalOpen(true);
                           }}
-                          className="hover:bg-gray-200 cursor-pointer"
+                          className="hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer dark:text-white"
                         >
                           <Play className="h-4 w-4 mr-1" />
-                          View
+                          <span className="sr-only sm:not-sr-only">View</span>
                         </Button>
                       </div>
                     </div>
@@ -466,13 +468,13 @@ const Assignments = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-muted-foreground" />
+                <div className="w-16 h-16 bg-muted dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-muted-foreground dark:text-gray-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-muted-foreground mb-2">
+                <h3 className="text-lg font-semibold text-muted-foreground dark:text-gray-400 mb-2">
                   No assignments found
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground dark:text-gray-500">
                   Student hasn&apos;t received or submitted any assignments yet
                 </p>
               </div>
