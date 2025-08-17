@@ -116,7 +116,7 @@ const Assignments = () => {
         open={isSubmissionModalOpen}
         setOpen={() => setIsSubmissionModalOpen(false)}
         title={`Submit Assignment: ${selectedAssignment?.title}`}
-        className="w-full max-w-2xl mx-4" // Better width control
+        className="w-full max-w-2xl" // Better width control
         bgColor="bg-white dark:bg-gray-800"
       >
         <div className="space-y-6 dark:text-white p-1">
