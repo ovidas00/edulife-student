@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Phone, Info } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle } from "lucide-react";
@@ -105,10 +106,12 @@ export default function LoginPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-8">
             {/* Logo Section */}
             <div className="text-center mb-8">
-              <img
+              <Image
                 src="/icon-300x100.png"
                 alt="Logo"
-                className="h-15 mx-auto mb-2"
+                height={120}
+                width={180}
+                className="mx-auto mb-2"
               />
               <p className="text-gray-500 dark:text-gray-400 text-sm font-light">
                 Nurturing young minds through innovative learning experiences
