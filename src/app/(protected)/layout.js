@@ -1,0 +1,347 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import {
+  Menu,
+  Power,
+  Moon,
+  Home,
+  FileText,
+  Phone,
+  MapPin,
+  Clock,
+  ChevronRight,
+} from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import "../globals.css";
+import api from "@/lib/api";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CheckCircle, Trophy } from "lucide-react";
+
+export default function RootLayout({ children }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isVerified, setIsVerified] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Token verification
+  useEffect(() => {
+    const token = localStorage.getItem("studentId");
+    if (!token) {
+      router.replace("/auth/login"); // redirect if missing
+    } else {
+      setIsVerified(true);
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    router.replace("/auth/login");
+  };
+
+  const { data: student } = useQuery({
+    queryKey: ["student"],
+    queryFn: async () => {
+      const response = await api.get("/student");
+      return response.data.payload.student;
+    },
+  });
+
+  const { data: leaderboard = [] } = useQuery({
+    queryKey: ["leaderboard"],
+    queryFn: async () => {
+      const response = await api.get("/leaderboard");
+      return response.data.payload.leaderboard;
+    },
+  });
+
+  const studentId =
+    typeof window !== "undefined" ? localStorage.getItem("studentId") : null;
+
+  const myPosition = leaderboard?.findIndex((s) => s.studentId === studentId);
+  const myRank = myPosition !== -1 ? myPosition + 1 : null;
+
+  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+  const menuItems = [
+    { icon: Home, label: "Dashboard", href: "/" },
+    { icon: FileText, label: "Assignments", href: "/assignments" },
+  ];
+
+  // Only render dashboard if verified
+  if (!isVerified) return null;
+
+  return (
+    <div className="h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
+      {/* Mobile overlay */}
+      {isDrawerOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden
+  data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95
+  data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95
+  transition-all duration-300"
+          onClick={closeDrawer}
+        />
+      )}
+
+      {/* Drawer */}
+      <aside
+        className={`
+              h-full w-64 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg
+              flex flex-col
+              fixed top-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
+              lg:relative lg:transform-none lg:z-10
+              ${
+                isDrawerOpen
+                  ? "translate-x-0"
+                  : "-translate-x-full lg:translate-x-0"
+              }
+            `}
+      >
+        <div className="p-4 backdrop-blur-sm border-b border-gray-100">
+          <div className="flex flex-col items-center space-y-4">
+            {/* Profile Avatar */}
+            <div className="relative">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 p-0.5">
+                <Avatar className="h-full w-full">
+                  <AvatarImage
+                    src={student?.profilePicture || "/placeholder.svg"}
+                    alt={student?.name}
+                    className="rounded-full"
+                  />
+                  <AvatarFallback className="bg-white text-blue-600 font-bold">
+                    {student?.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              {student?.isActive && (
+                <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-white bg-green-400 flex items-center justify-center">
+                  <CheckCircle className="h-3 w-3 text-white" />
+                </div>
+              )}
+            </div>
+
+            {/* Student Info */}
+            <div className="text-center space-y-1">
+              <h3 className="font-bold text-gray-800">{student?.name}</h3>
+              <p className="text-sm text-gray-500">
+                {student?.batch} • {student?.session}
+              </p>
+            </div>
+
+            {/* Current Rank */}
+            <div className="w-full p-2 bg-gradient-to-r from-green-100 to-gray-100 rounded-lg border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Trophy className="h-5 w-5 text-yellow-500" />
+                  <span className="text-sm font-semibold text-gray-700">
+                    Current Rank
+                  </span>
+                </div>
+                <span className="text-lg font-bold text-blue-600">
+                  #{myRank}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Navigation Menu */}
+        <nav className="flex-1 p-4 overflow-y-auto">
+          <ul className="space-y-2">
+            {menuItems.map((item, index) => {
+              const isActive = pathname === item.href;
+              return (
+                <li key={index}>
+                  <a
+                    href={item.href}
+                    className={`flex items-center space-x-3 p-3 rounded-xl ${
+                      isActive
+                        ? "bg-green-800 text-bold shadow-lg text-white dark:bg-gray-700 dark:text-green-400"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400"
+                    } transition-colors duration-200 group`}
+                    onClick={() => {
+                      if (
+                        typeof window !== "undefined" &&
+                        window.innerWidth < 1024
+                      ) {
+                        closeDrawer();
+                      }
+                    }}
+                  >
+                    <item.icon
+                      size={20}
+                      className={
+                        isActive
+                          ? "text-white dark:text-green-400"
+                          : "text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400"
+                      }
+                    />
+                    <span className="font-semibold">{item.label}</span>
+                    <ChevronRight
+                      size={16}
+                      className={`ml-auto ${
+                        isActive
+                          ? "text-white dark:text-green-400 opacity-100"
+                          : "text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100"
+                      } transition-opacity`}
+                    />
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="bg-green-700 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleDrawer}
+                className="lg:hidden p-2 cursor-pointer rounded-md hover:bg-green-600 dark:hover:bg-gray-700 transition-colors"
+              >
+                <Menu size={20} className="text-gray-100 dark:text-gray-300" />
+              </button>
+              <div className="flex items-center space-x-3">
+                <img
+                  src="/icon-500x150-yellow.png"
+                  alt="Logo"
+                  className="h-12"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <button
+                className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"
+                title="Toggle Theme"
+              >
+                <Moon size={20} className="text-gray-100 dark:text-gray-300" />
+              </button>
+              <button
+                className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"
+                title="Logout"
+                onClick={handleLogout}
+              >
+                <Power size={20} className="text-gray-100 dark:text-gray-300" />
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-7xl mx-auto min-h-[100%]">{children}</div>
+
+          {/* Footer Content */}
+          <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            <div className="p-8 space-y-8">
+              <div className="text-center border-b border-slate-700 pb-6">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-green-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <img
+                      src="/logo-500x500-yellow.png"
+                      alt="Logo"
+                      className="p-2"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-black text-green-600/100">
+                      EDULIFE IT INSTITUTE
+                    </h3>
+                    <p className="text-slate-400 text-sm text-left font-medium">
+                      Student Portal v1.0
+                    </p>
+                  </div>
+                </div>
+                <p className="text-slate-300 font-medium max-w-2xl mx-auto">
+                  Nurturing young minds through innovative learning experiences
+                  since 2015. Empowering students with cutting-edge technology
+                  education and practical skills.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
+                  <h4 className="font-black text-xl mb-4 text-primary flex items-center gap-2 text-green-500/80">
+                    <Phone className="h-5 w-5" />
+                    Contact Information
+                  </h4>
+                  <div className="space-y-3 text-slate-300">
+                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
+                      <span className="font-medium">+8801519575226</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
+                      <span className="font-medium">
+                        edulifetraining@gmail.com
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
+                      <span className="font-medium">
+                        www.edulifeuniversity.com
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
+                  <h4 className="font-black text-xl mb-4 text-secondary flex items-center gap-2 text-green-500/80">
+                    <MapPin className="h-5 w-5" />
+                    Our Location
+                  </h4>
+                  <div className="text-slate-300 space-y-2">
+                    <p className="font-medium">
+                      Shantinagar (Adjacent to BRAC Office)
+                    </p>
+                    <p className="font-medium">Khagrachari, Chittagong</p>
+                    <p className="font-medium">Bangladesh</p>
+                    <div className="mt-3 p-2 bg-slate-700/50 rounded-lg">
+                      <p className="text-sm font-bold text-primary">
+                        Postal Code: 4400
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
+                  <h4 className="font-black text-xl mb-4 text-accent flex items-center gap-2 text-green-500/80">
+                    <Clock className="h-5 w-5" />
+                    Office Hours
+                  </h4>
+                  <div className="text-slate-300 space-y-3">
+                    <div className="p-3 bg-slate-700/50 rounded-lg">
+                      <p className="font-bold text-green-400">
+                        Saturday - Thursday
+                      </p>
+                      <p className="text-sm">9:00 AM - 5:00 PM</p>
+                    </div>
+                    <div className="p-3 bg-slate-700/50 rounded-lg">
+                      <p className="font-bold text-green-400">Friday</p>
+                      <p className="text-sm">9:00 AM - 12:00 PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-slate-700 text-center">
+                <div className="text-center">
+                  <p className="text-slate-400 font-medium">
+                    © {new Date().getFullYear()} Edulife IT Institute. All
+                    rights reserved.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </main>
+      </div>
+    </div>
+  );
+}
