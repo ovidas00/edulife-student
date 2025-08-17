@@ -253,7 +253,7 @@ const Assignments = () => {
                             <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
                               3
                             </span>
-                            <span>Select "Copy link"</span>
+                            <span>Select &quot;Copy link&quot;</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
