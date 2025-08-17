@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
 import {
   Menu,
   Power,
@@ -252,15 +253,17 @@ export default function RootLayout({ children }) {
             <div className="p-8 space-y-8">
               <div className="text-center border-b border-slate-700 pb-6">
                 <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-green-700 rounded-xl flex items-center justify-center shadow-lg">
-                    <img
+                  <div className="w-12 flex-shrink-0 h-12 bg-green-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <Image
                       src="/logo-500x500-yellow.png"
                       alt="Logo"
                       className="p-2"
+                      width={150}
+                      height={150}
                     />
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black text-green-600/100 text-left">
+                    <h3 className="text-xl md:text-3xl font-black text-green-600/100 text-left">
                       EDULIFE IT INSTITUTE
                     </h3>
                     <p className="text-slate-400 text-sm text-left font-medium">
@@ -268,7 +271,7 @@ export default function RootLayout({ children }) {
                     </p>
                   </div>
                 </div>
-                <p className="text-slate-300 font-medium max-w-2xl mx-auto">
+                <p className="text-slate-300 text-sm md:text-md font-medium max-w-2xl mx-auto">
                   Nurturing young minds through innovative learning experiences
                   since 2015. Empowering students with cutting-edge technology
                   education and practical skills.
@@ -339,7 +342,7 @@ export default function RootLayout({ children }) {
 
               <div className="pt-6 border-t border-slate-700 text-center">
                 <div className="text-center">
-                  <p className="text-slate-400 font-medium">
+                  <p className="text-slate-400 font-medium text-sm">
                     © {new Date().getFullYear()} Edulife IT Institute. All
                     rights reserved.
                   </p>
