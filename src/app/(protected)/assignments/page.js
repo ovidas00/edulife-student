@@ -13,6 +13,8 @@ import {
   Trophy,
   FileText,
   Share2,
+  Link,
+  Loader2,
   Info,
   Send,
 } from "lucide-react";
@@ -21,7 +23,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/ui/AppDialog";
 import api from "@/lib/api";
-import { Check } from "lucide-react";
 
 function getYouTubeVideoId(url) {
   var regExp =
@@ -115,144 +116,161 @@ const Assignments = () => {
         open={isSubmissionModalOpen}
         setOpen={() => setIsSubmissionModalOpen(false)}
         title={`Submit Assignment: ${selectedAssignment?.title}`}
-        className="min-w-full lg:min-w-4xl"
-        bgColor="bg-gray-100 dark:bg-gray-800"
+        className="w-full max-w-2xl mx-4" // Better width control
+        bgColor="bg-white dark:bg-gray-800"
       >
-        <div className="dark:text-white">
-          <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-            <Play className="h-5 w-5 text-primary dark:text-primary-foreground" />
-            Assignment Instructions Video
-          </h3>
-          <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            <iframe
-              src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-                selectedAssignment?.submissionDetails || ""
-              )}?controls=0&modestbranding=1&autoplay=1&rel=0&showinfo=0&fs=0&iv_load_policy=3`}
-              className="w-full h-full"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            />
+        <div className="space-y-6 dark:text-white p-1">
+          {/* Video Section */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-primary dark:text-primary-foreground">
+              <Play className="h-5 w-5 flex-shrink-0" />
+              <h3 className="text-lg font-semibold">
+                Assignment Instructions Video
+              </h3>
+            </div>
+            <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+              <iframe
+                src={`https://www.youtube.com/embed/${getYouTubeVideoId(
+                  selectedAssignment?.submissionDetails || ""
+                )}?controls=0&modestbranding=1&autoplay=1&rel=0&showinfo=0&fs=0&iv_load_policy=3`}
+                className="w-full h-full"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </div>
           </div>
 
           {/* Assignment Description */}
-          <div className="p-4 bg-muted/30 dark:bg-gray-700/50 rounded-lg">
-            <h4 className="font-bold mb-2">Assignment Description:</h4>
-            <p className="text-muted-foreground dark:text-gray-300">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm">
+            <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+              Assignment Description
+            </h4>
+            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
               {selectedAssignment?.description}
             </p>
           </div>
 
           {!isViewMode && (
-            <>
+            <div className="space-y-6">
               {/* Submission Form */}
-              <div className="space-y-4 px-2 mt-4">
-                <h3 className="text-lg font-bold flex items-center gap-2">
-                  <Upload className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  Submit Your Video
-                </h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                  <Upload className="h-5 w-5 flex-shrink-0" />
+                  <h3 className="text-lg font-semibold">Submit Your Video</h3>
+                </div>
 
-                <div className="space-y-3 mb-4">
-                  <label className="text-sm font-semibold dark:text-gray-300">
+                {/* Submission Method Toggle */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Choose Submission Method
                   </label>
-                  <div className="flex gap-2 mt-1">
-                    <Button
-                      size="sm"
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
                       onClick={() => setSubmissionType("youtube")}
-                      className={`flex items-center gap-2 rounded-lg ${
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all ${
                         submissionType === "youtube"
-                          ? "bg-green-700 dark:bg-green-600 text-white"
-                          : "border border-gray-300 dark:border-gray-600 dark:text-gray-300"
+                          ? "border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                          : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
                       }`}
                     >
                       <Play className="h-4 w-4" />
-                      YouTube
-                    </Button>
-                    <Button
-                      size="sm"
+                      <span className="text-sm font-medium">YouTube</span>
+                    </button>
+                    <button
                       onClick={() => setSubmissionType("facebook")}
-                      className={`flex items-center gap-2 rounded-lg ${
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all ${
                         submissionType === "facebook"
-                          ? "bg-green-700 dark:bg-green-600 text-white"
-                          : "border border-gray-300 dark:border-gray-600 dark:text-gray-300"
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                          : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
                       }`}
                     >
                       <Share2 className="h-4 w-4" />
-                      Facebook Group
-                    </Button>
+                      <span className="text-sm font-medium">Facebook</span>
+                    </button>
                   </div>
                 </div>
               </div>
 
+              {/* URL Input Section */}
               {submissionType === "youtube" && (
-                <div className="space-y-3 px-2">
-                  <label className="text-sm font-semibold dark:text-gray-300">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     YouTube Video Link
                   </label>
-                  <input
-                    type="url"
-                    value={submissionUrl}
-                    onChange={(e) => setSubmissionUrl(e.target.value)}
-                    placeholder="https://www.youtube.com/watch?v=..."
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Link className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="url"
+                      value={submissionUrl}
+                      onChange={(e) => setSubmissionUrl(e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
                 </div>
               )}
 
               {submissionType === "facebook" && (
-                <div className="space-y-3 px-2">
-                  <label className="text-sm font-semibold dark:text-gray-300">
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Facebook Group Post Link
                   </label>
-                  <input
-                    type="url"
-                    value={facebookPostLink}
-                    onChange={(e) => setFacebookPostLink(e.target.value)}
-                    placeholder="https://www.facebook.com/groups/your-group/posts/..."
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  />
-                  <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Link className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="url"
+                      value={facebookPostLink}
+                      onChange={(e) => setFacebookPostLink(e.target.value)}
+                      placeholder="https://www.facebook.com/groups/your-group/posts/..."
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                       <div className="text-sm text-blue-800 dark:text-blue-200">
-                        <p className="font-semibold mb-1">
+                        <p className="font-medium mb-2">
                           How to get Facebook post link:
                         </p>
-                        <ol className="list-decimal list-inside space-y-1 text-xs">
-                          <li>Post your video in the Facebook group</li>
-                          <li>Click the three dots (...) on your post</li>
-                          <li>Select &quot;Copy link&quot;</li>
-                          <li>Paste the link here</li>
-                        </ol>
+                        <ul className="space-y-1.5">
+                          <li className="flex items-start gap-2">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
+                              1
+                            </span>
+                            <span>Post your video in the Facebook group</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
+                              2
+                            </span>
+                            <span>Click the three dots (...) on your post</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
+                              3
+                            </span>
+                            <span>Select "Copy link"</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-medium">
+                              4
+                            </span>
+                            <span>Paste the link here</span>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
 
-              <div className="flex gap-3 mt-8 px-2">
-                <Button
-                  onClick={submissionMutation.mutate}
-                  disabled={
-                    submissionType === "youtube"
-                      ? !submissionUrl
-                      : !facebookPostLink
-                  }
-                  className="bg-green-700 dark:bg-green-600 cursor-pointer hover:bg-green-600 dark:hover:bg-green-500 text-white rounded-lg"
-                >
-                  <Send className="h-4 w-4 mr-2" />
-                  {submissionMutation.isPending ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Processing...
-                    </div>
-                  ) : (
-                    "Submit Assignment"
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg dark:text-white"
+              {/* Action Buttons */}
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
+                <button
                   onClick={() => {
                     setSelectedAssignment(null);
                     setSubmissionUrl("");
@@ -260,11 +278,33 @@ const Assignments = () => {
                     setSubmissionType("youtube");
                     setIsSubmissionModalOpen(false);
                   }}
+                  className="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium"
                 >
                   Cancel
-                </Button>
+                </button>
+                <button
+                  onClick={submissionMutation.mutate}
+                  disabled={
+                    submissionType === "youtube"
+                      ? !submissionUrl
+                      : !facebookPostLink
+                  }
+                  className="flex items-center justify-center px-4 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {submissionMutation.isPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 mr-2" />
+                      Submit Assignment
+                    </>
+                  )}
+                </button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </AppDialog>
