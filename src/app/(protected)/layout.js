@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
   if (!isVerified) return null;
 
   return (
-    <div className="h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
+    <div className="relative h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
       {/* Mobile overlay */}
       {isDrawerOpen && (
         <div
