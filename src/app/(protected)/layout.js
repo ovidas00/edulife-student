@@ -156,7 +156,7 @@ export default function RootLayout({ children }) {
 
         {/* Navigation Menu */}
         <nav className="flex-1 p-4 overflow-y-auto">
-          <ul className="space-y-3">
+          <ul className="space-y-2">
             {menuItems.map((item, index) => {
               const isActive = pathname === item.href;
               return (
@@ -278,7 +278,7 @@ export default function RootLayout({ children }) {
                     />
                   </div>
                   <div>
-                    <h3 className="text-xl md:text-3xl font-black text-green-600/100 text-left">
+                    <h3 className="text-xl md:text-3xl font-black text-yellow-500 text-left">
                       EDULIFE IT INSTITUTE
                     </h3>
                     <p className="text-slate-400 text-sm text-left font-medium">
