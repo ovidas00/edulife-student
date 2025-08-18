@@ -53,7 +53,7 @@ const Attendance = () => {
         <CardContent className="space-y-6 px-4 md:px-6">
           <div className="text-center p-6 bg-blue-50 rounded-xl dark:bg-blue-900/20">
             <div className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-              {attendanceRate || 0}%
+              {Math.round(attendanceRate) || 0}%
             </div>
             <p className="text-gray-600 font-medium dark:text-gray-300">
               Overall Attendance
@@ -65,7 +65,7 @@ const Attendance = () => {
             <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
               <div
                 className="bg-blue-600 h-3 rounded-full relative transition-all duration-500 ease-out"
-                style={{ width: `${attendanceRate || 0}%` }}
+                style={{ width: `${Math.round(attendanceRate) || 0}%` }}
               ></div>
             </div>
           </div>
