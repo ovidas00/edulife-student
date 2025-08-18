@@ -8,12 +8,13 @@ import {
   Power,
   Moon,
   Home,
-  FileText,
   Phone,
   MapPin,
   Clock,
   User,
   ChevronRight,
+  CreditCard,
+  BookOpen,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
@@ -69,7 +70,8 @@ export default function RootLayout({ children }) {
 
   const menuItems = [
     { icon: Home, label: "Dashboard", href: "/" },
-    { icon: FileText, label: "Assignments", href: "/assignments" },
+    { icon: BookOpen, label: "Assignments", href: "/assignments" },
+    { icon: CreditCard, label: "Billing", href: "/billing" },
   ];
 
   // Only render dashboard if verified
@@ -162,7 +164,7 @@ export default function RootLayout({ children }) {
                   <a
                     href={item.href}
                     className={`
-                flex items-center space-x-3 p-3 rounded-xl
+                flex items-center space-x-3 py-2 px-3 rounded-xl
                 ${
                   isActive
                     ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg"
