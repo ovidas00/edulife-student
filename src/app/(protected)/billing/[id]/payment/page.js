@@ -92,7 +92,7 @@ const Payment = () => {
 
   if (!invoiceData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p>Loading payment information...</p>
         </div>
@@ -101,7 +101,7 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center bg-gray-50 py-8 px-4">
+    <div className="flex items-center bg-gray-50 py-8 px-4">
       <Toaster position="bottom-center" />
       <div className="max-w-md mx-auto">
         {!isSuccess ? (

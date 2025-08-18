@@ -291,9 +291,13 @@ const Billing = () => {
                   {invoice.status === "Unpaid" && (
                     <button
                       className="w-full py-1 font-medium rounded-md bg-green-600 cursor-pointer hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white"
-                      onClick={() =>
-                        router.push(`/billing/${invoice._id}/payment`)
-                      }
+                      onClick={() => {
+                        sessionStorage.setItem(
+                          "invoiceData",
+                          JSON.stringify(invoice)
+                        );
+                        router.push(`/billing/${invoice._id}/payment`);
+                      }}
                     >
                       Pay Now
                     </button>
