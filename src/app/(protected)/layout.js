@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
 import api from "@/lib/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Calendar } from "lucide-react";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -71,6 +72,7 @@ export default function RootLayout({ children }) {
 
   const menuItems = [
     { icon: Home, label: "Dashboard", href: "/" },
+    { icon: Calendar, label: "Attendance", href: "/attendance" },
     { icon: BookOpen, label: "Assignments", href: "/assignments" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
     { icon: Trophy, label: "Rankings", href: "/rankings" },
