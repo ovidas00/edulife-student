@@ -8,12 +8,12 @@ import api from "@/lib/api";
 
 const Payment = () => {
   const router = useRouter();
-  const invoiceData = JSON.parse(sessionStorage.getItem("invoiceData"));
   const [activeTab, setActiveTab] = useState("bKash");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [invoiceData, setInvoiceData] = useState(null);
   const [formData, setFormData] = useState({
-    studentId: localStorage.getItem("studentId"),
-    invoiceId: invoiceData._id,
+    studentId: "",
+    invoiceId: "",
     from: "",
     transId: "",
     amount: "",
@@ -21,7 +21,17 @@ const Payment = () => {
   });
 
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, paymentMethod: activeTab }));
+    // This code runs only on the client side
+    const invoice = JSON.parse(sessionStorage.getItem("invoiceData"));
+    const studentId = localStorage.getItem("studentId");
+
+    setInvoiceData(invoice);
+    setFormData((prev) => ({
+      ...prev,
+      studentId,
+      invoiceId: invoice?._id || "",
+      paymentMethod: activeTab,
+    }));
   }, [activeTab]);
 
   const [copied, setCopied] = useState(false);
@@ -31,7 +41,7 @@ const Payment = () => {
     Nagad: "01816575225",
   };
 
-  const subtotal = invoiceData.amount - invoiceData.paid;
+  const subtotal = invoiceData ? invoiceData.amount - invoiceData.paid : 0;
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -51,13 +61,11 @@ const Payment = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     mutation.mutate(formData);
   };
 
@@ -81,6 +89,16 @@ const Payment = () => {
       />
     </svg>
   );
+
+  if (!invoiceData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <p>Loading payment information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center bg-gray-50 py-8 px-4">
