@@ -116,7 +116,7 @@ const Billing = () => {
             Payment History
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 md:px-6">
           <div className="overflow-x-auto">
             <div className="overflow-hidden hidden md:block rounded-lg border border-gray-200 dark:border-gray-700 border-border dark:border-border-dark shadow-sm">
               {/* Desktop Table */}
