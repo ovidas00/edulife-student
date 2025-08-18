@@ -15,12 +15,13 @@ import {
   ChevronRight,
   CreditCard,
   BookOpen,
+  Trophy,
+  CheckCircle,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
 import api from "@/lib/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle, Trophy } from "lucide-react";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -72,6 +73,7 @@ export default function RootLayout({ children }) {
     { icon: Home, label: "Dashboard", href: "/" },
     { icon: BookOpen, label: "Assignments", href: "/assignments" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
+    { icon: Trophy, label: "Rankings", href: "/rankings" },
   ];
 
   // Only render dashboard if verified
