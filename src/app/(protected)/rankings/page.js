@@ -82,7 +82,7 @@ const Rankings = () => {
                   <h3 className={`font-semibold text-gray-900 truncate ${index > 2 ? "dark:text-white" : "dark:text-gray-700"}`}>
                     {student.name}
                   </h3>
-                  <p className={`text-xs truncate text-gray-500 dark:text-gray-400 ${index > 2 ? "dark:text-white" : "dark:text-grey-500"}`}>
+                  <p className={`text-xs truncate text-gray-500 dark:text-gray-400 ${index > 2 ? "dark:text-white" : "dark:text-gray-700"}`}>
                     {student.session}
                   </p>
                 </div>
@@ -92,7 +92,7 @@ const Rankings = () => {
                   <div
                     className={`text-xl font-bold ${
                       index < 3
-                        ? "text-gray-900 dark:text-white"
+                        ? "text-gray-900 dark:text-gray-400"
                         : "text-gray-700 dark:text-gray-300"
                     }`}
                   >
