@@ -295,24 +295,37 @@ export default function RootLayout({ children }) {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
-                  <h4 className="font-black text-xl mb-4 text-primary flex items-center gap-2 text-green-500/80">
+                  <h4 className="font-black text-xl mb-4 text-green-500/80 flex items-center gap-2">
                     <Phone className="h-5 w-5" />
                     Contact Information
                   </h4>
-                  <div className="space-y-3 text-slate-300">
-                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
-                      <span className="font-medium">+8801519575226</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
-                      <span className="font-medium">
+                  <div className="text-slate-300 space-y-1">
+                    <a
+                      href="tel:+8801519575226"
+                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                    >
+                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
+                        +8801519575226
+                      </span>
+                    </a>
+                    <a
+                      href="mailto:edulifetraining@gmail.com"
+                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                    >
+                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
                         edulifetraining@gmail.com
                       </span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
-                      <span className="font-medium">
+                    </a>
+                    <a
+                      href="https://www.edulifeuniversity.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                    >
+                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
                         www.edulifeuniversity.com
                       </span>
-                    </div>
+                    </a>
                   </div>
                 </div>
 
