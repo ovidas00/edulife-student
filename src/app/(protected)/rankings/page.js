@@ -26,7 +26,7 @@ const Rankings = () => {
         </h1>
       </div>
 
-      <Card className="shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <Card className="shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-black text-gray-900 dark:text-white">
             <Trophy className="h-6 w-6 text-green-700 dark:text-green-400" />
