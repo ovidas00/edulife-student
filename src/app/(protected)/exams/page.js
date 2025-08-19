@@ -490,7 +490,7 @@ const ExamResults = () => {
                   No exam results found
                 </h3>
                 <p className="text-sm text-muted-foreground dark:text-gray-500">
-                  Student hasn't taken any exams yet or results are not
+                  Student hasn&apos;t taken any exams yet or results are not
                   available
                 </p>
               </div>
