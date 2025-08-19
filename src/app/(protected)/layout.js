@@ -78,6 +78,7 @@ export default function RootLayout({ children }) {
     { icon: Book, label: "Exam Results", href: "/exams" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
     { icon: Trophy, label: "Rankings", href: "/rankings" },
+    { icon: User, label: "Profile", href: "/profile" },
   ];
 
   // Only render dashboard if verified
