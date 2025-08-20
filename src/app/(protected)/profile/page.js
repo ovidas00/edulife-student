@@ -180,10 +180,10 @@ const Profile = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-4 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-xl border border-primary/20 dark:border-primary/30 border-blue-300 from-indigo-50 to-indigo-50/50">
+            <div className="p-4 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-xl border border-primary/20 dark:border-primary/30 from-cyan-50 to-cyan-25 dark:from-cyan-900/20 dark:to-cyan-800/10 border-cyan-200 dark:border-cyan-700/30">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-bold text-indigo-600">
+                <Calendar className="h-4 w-4 text-cyan-600" />
+                <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
                   Admission Date
                 </span>
               </div>
@@ -196,10 +196,10 @@ const Profile = () => {
               </p>
             </div>
 
-            <div className="p-4 bg-gradient-to-br from-secondary/10 to-secondary/5 dark:from-secondary/20 dark:to-secondary/10 rounded-xl border border-secondary/20 dark:border-secondary/30 from-amber-50 to-amber-50/50 border-amber-300">
+            <div className="p-4 bg-gradient-to-br from-secondary/10 to-secondary/5 dark:from-secondary/20 dark:to-secondary/10 rounded-xl border from-violet-50 to-violet-25 dark:from-violet-900/20 dark:to-violet-800/10 border-violet-200 dark:border-violet-700/30">
               <div className="flex items-center gap-2 mb-2">
-                <CreditCard className="h-4 w-4 text-amber-600" />
-                <span className="text-sm font-bold text-secondary dark:text-secondary-foreground text-amber-600">
+                <CreditCard className="h-4 w-4 text-violet-600" />
+                <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
                   Monthly Fee
                 </span>
               </div>
