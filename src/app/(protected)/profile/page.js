@@ -10,13 +10,17 @@ import {
   Clock,
   AlertCircle,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { readAndCompressImage } from "browser-image-resizer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
+import toast from "react-hot-toast";
 
 const Profile = () => {
+  const queryClient = useQueryClient();
+
   const { data: student } = useQuery({
     queryKey: ["student"],
     queryFn: async () => {
@@ -24,6 +28,37 @@ const Profile = () => {
       return response.data.payload.student;
     },
   });
+
+  const profilePicMutation = useMutation({
+    mutationFn: (formData) => api.put("/student/picture", formData),
+    onSuccess: (response) => {
+      toast.success(response.data.message);
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+    },
+    onError: (error) =>
+      toast.error(error.response?.data?.message || error.message),
+  });
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const config = {
+          quality: 0.7,
+          maxWidth: 150,
+          maxHeight: 150,
+          mimeType: "image/jpeg",
+        };
+
+        const resizedImage = await readAndCompressImage(file, config);
+        const formData = new FormData();
+        formData.append("profilePicture", resizedImage);
+        profilePicMutation.mutate(formData);
+      } catch (error) {
+        console.error("Error resizing image:", error);
+      }
+    }
+  };
 
   return (
     <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900">
@@ -72,10 +107,27 @@ const Profile = () => {
                 {student?.batch} • {student?.session}
               </p>
             </div>
-            <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-              <Upload className="h-4 w-4 mr-2" />
-              Change Photo
-            </Button>
+            <label className="cursor-pointer">
+              <span className="text-sm font-medium flex bg-green-600 p-2 shadow rounded-lg justify-center text-white">
+                {profilePicMutation.isPending ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Processing...
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4 mr-2" />
+                    Change Photo
+                  </>
+                )}
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+            </label>
           </CardContent>
         </Card>
 
