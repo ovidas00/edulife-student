@@ -395,11 +395,12 @@ const Assignments = () => {
                     className={`p-4 rounded-xl border-2 transition-all duration-200 ${
                       assignment.status === "submitted"
                         ? "bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-700"
-                        : assignment.status === "overdue" ||
-                          assignment.status === "not_submitted"
+                        : assignment.status === "not_submitted"
                         ? "bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 border-red-200 dark:border-red-700"
                         : assignment.status === "pending" && !assignment.url
                         ? "bg-gradient-to-r from-blue-50 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/30 border-blue-200 dark:border-blue-700"
+                        : assignment.status === "overdue"
+                        ? "bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/30 dark:to-violet-900/30 border-purple-200 dark:border-purple-700"
                         : "bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-yellow-200 dark:border-yellow-700"
                     }`}
                   >
@@ -424,6 +425,8 @@ const Assignments = () => {
                               ? "bg-green-500 dark:bg-green-600"
                               : assignment.status === "pending"
                               ? "bg-yellow-500 dark:bg-yellow-600"
+                              : assignment.status === "overdue"
+                              ? "bg-purple-600 dark:bg-purple-700"
                               : "bg-red-700 dark:bg-red-600"
                           }`}
                         >
@@ -431,6 +434,8 @@ const Assignments = () => {
                             ? "Submitted"
                             : assignment.status === "pending"
                             ? "Pending"
+                            : assignment.status === "overdue"
+                            ? "Overdue"
                             : "Not Submitted"}
                         </div>
                       )}
@@ -488,6 +493,7 @@ const Assignments = () => {
                             </span>
                           </Button>
                         )}
+                        {/* View button always available */}
                         <Button
                           variant="outline"
                           size="sm"
