@@ -476,7 +476,7 @@ const Assignments = () => {
                       </div>
 
                       <div className="flex gap-2 self-end sm:self-auto">
-                        {assignment.status === "pending" && !assignment.url && (
+                        {assignment.status === "not_submitted" && (
                           <Button
                             size="sm"
                             className="bg-green-600 dark:bg-green-700 hover:bg-green-500 dark:hover:bg-green-600 text-white cursor-pointer"
