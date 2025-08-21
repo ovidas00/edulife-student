@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   User,
   Upload,
@@ -20,6 +21,11 @@ import toast from "react-hot-toast";
 
 const Profile = () => {
   const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    dateOfBirth: "",
+    gender: "",
+    address: "",
+  });
 
   const { data: student } = useQuery({
     queryKey: ["student"],
@@ -31,6 +37,16 @@ const Profile = () => {
 
   const profilePicMutation = useMutation({
     mutationFn: (formData) => api.put("/student/picture", formData),
+    onSuccess: (response) => {
+      toast.success(response.data.message);
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+    },
+    onError: (error) =>
+      toast.error(error.response?.data?.message || error.message),
+  });
+
+  const profileInfoMutation = useMutation({
+    mutationFn: () => api.put("/student", formData),
     onSuccess: (response) => {
       toast.success(response.data.message);
       queryClient.invalidateQueries({ queryKey: ["student"] });
@@ -60,6 +76,24 @@ const Profile = () => {
     }
   };
 
+  useEffect(() => {
+    setFormData({
+      dateOfBirth: student?.dateOfBirth ?? "",
+      gender: student?.gender ?? "",
+      address: student?.address ?? "",
+    });
+  }, [student]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    profileInfoMutation.mutate();
+  };
+
   return (
     <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900">
       <div className="flex items-center gap-3 mb-6">
@@ -84,7 +118,7 @@ const Profile = () => {
               <Avatar className="h-full w-full border-2 border-white dark:border-gray-800">
                 <AvatarImage
                   src={student?.profilePicture || "/placeholder.svg"}
-                  alt={student?.name}
+                  alt={student?.name || "Profile Picture"}
                   className="rounded-full object-cover"
                 />
                 <AvatarFallback className="bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400">
@@ -108,7 +142,7 @@ const Profile = () => {
               </p>
             </div>
             <label className="cursor-pointer">
-              <span className="text-sm font-medium flex bg-green-600 p-2 shadow rounded-lg justify-center text-white">
+              <span className="text-sm font-medium flex bg-green-600 p-2 rounded-lg justify-center text-white">
                 {profilePicMutation.isPending ? (
                   <div className="flex items-center justify-center">
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -140,84 +174,87 @@ const Profile = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={student?.name}
-                  readOnly
-                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-muted/30 dark:bg-gray-800/50 text-muted-foreground dark:text-gray-400 cursor-not-allowed"
-                />
-                <p className="text-xs text-muted-foreground dark:text-gray-500">
-                  Contact admin to change your name
-                </p>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={student?.name || ""}
+                    readOnly
+                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-muted/30 dark:bg-gray-800/50 text-muted-foreground dark:text-gray-400 cursor-not-allowed"
+                  />
+                  <p className="text-xs text-muted-foreground dark:text-gray-500">
+                    Contact admin to change your name
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
+                    Date of Birth
+                  </label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    max={new Date().toISOString().split("T")[0]}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
+                    Gender
+                  </label>
+                  <select
+                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    defaultValue={student?.phone || ""}
+                    readOnly
+                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-muted/30 dark:bg-gray-800/50 text-muted-foreground dark:text-gray-400 cursor-not-allowed"
+                  />
+                  <p className="text-xs text-muted-foreground dark:text-gray-500">
+                    Phone number cannot be changed
+                  </p>
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
+                    Address
+                  </label>
+                  <textarea
+                    name="address"
+                    value={formData.address}
+                    rows={3}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none dark:bg-gray-800 dark:text-white"
+                    placeholder="Enter your full address..."
+                  />
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  defaultValue="2017-04-26"
-                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:text-white"
-                />
+              <div className="flex gap-3 pt-4">
+                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Save Changes
+                </Button>
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
-                  Gender
-                </label>
-                <select
-                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:text-white"
-                  value={student?.gender}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={student?.phone}
-                  readOnly
-                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-muted/30 dark:bg-gray-800/50 text-muted-foreground dark:text-gray-400 cursor-not-allowed"
-                />
-                <p className="text-xs text-muted-foreground dark:text-gray-500">
-                  Phone number cannot be changed
-                </p>
-              </div>
-
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-sm font-bold text-muted-foreground dark:text-gray-400">
-                  Address
-                </label>
-                <textarea
-                  defaultValue={student?.address}
-                  rows={3}
-                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none dark:bg-gray-800 dark:text-white"
-                  placeholder="Enter your full address..."
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <Button
-                className="bg-green-600 hover:bg-green-700 text-white"
-                onClick={() => alert("hi")}
-              >
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Save Changes
-              </Button>
-            </div>
+            </form>
           </CardContent>
         </Card>
       </div>
