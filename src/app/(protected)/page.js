@@ -89,16 +89,17 @@ const Index = () => {
                   Next Exam
                 </p>
                 <p className="text-lg font-black text-secondary dark:text-blue-400">
-                  {new Date(studentNextExam?.examDateTime).toLocaleDateString(
-                    "en-US",
-                    {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }
-                  ) || "--"}
+                  {studentNextExam
+                    ? new Date(
+                        studentNextExam?.examDateTime
+                      ).toLocaleDateString("en-US", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "--"}
                 </p>
                 {studentNextExam?.title && (
                   <p className="text-xs text-gray-500 dark:text-gray-400">
