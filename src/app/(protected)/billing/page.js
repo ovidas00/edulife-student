@@ -200,7 +200,7 @@ const Billing = () => {
                         <StatusBadge status={invoice.status} />
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
-                        {invoice.status === "Unpaid" && (
+                        {invoice.status !== "Paid" && (
                           <button
                             className="w-full cursor-pointer font-medium px-3 rounded-lg text-md shadow-sm md:w-auto bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white"
                             onClick={() => {
@@ -288,7 +288,7 @@ const Billing = () => {
                     </div>
                   </div>
 
-                  {invoice.status === "Unpaid" && (
+                  {invoice.status !== "Paid" && (
                     <button
                       className="w-full py-1 font-medium rounded-md bg-green-600 cursor-pointer hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white"
                       onClick={() => {
