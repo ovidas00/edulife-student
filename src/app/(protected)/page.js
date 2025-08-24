@@ -66,11 +66,10 @@ const Index = () => {
     <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900">
       <div className="relative w-full h-[200px] rounded-2xl overflow-hidden bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white shadow-lg flex items-center justify-between px-6 md:px-12">
         {/* Background Icons */}
-        <BookOpen className="absolute top-6 left-8 w-20 h-20 text-white/10 rotate-12" />
-        <GraduationCap className="absolute bottom-6 left-1/3 w-24 h-24 text-white/10 -rotate-12" />
-        <Pencil className="absolute top-4 right-1/3 w-16 h-16 text-white/10" />
-        <School className="absolute bottom-4 right-8 w-20 h-20 text-white/10" />
-
+        <BookOpen className="absolute top-4 left-4 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white/10 rotate-12" />
+        <GraduationCap className="absolute bottom-4 left-1/4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-white/10 -rotate-12" />
+        <Pencil className="absolute top-2 right-1/4 w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 text-white/10" />
+        <School className="absolute bottom-4 right-4 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white/10" />
         {/* Left Content */}
         <div className="relative flex flex-col gap-2">
           <h1 className="text-2xl md:text-3xl font-bold drop-shadow-md">
