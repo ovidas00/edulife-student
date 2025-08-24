@@ -59,7 +59,7 @@ const Index = () => {
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-yellow-50 via-yellow-25 to-transparent border-yellow-200 shadow-lg dark:from-yellow-900/20 dark:via-yellow-900/10 dark:border-yellow-700">
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
