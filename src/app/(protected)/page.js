@@ -59,91 +59,76 @@ const Index = () => {
         </h1>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-yellow-50 via-yellow-25 to-transparent border-yellow-200 shadow-lg dark:from-yellow-900/20 dark:via-yellow-900/10 dark:border-yellow-700">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-primary/20 rounded-xl dark:bg-primary/30">
-                <BookOpen className="h-6 w-6 text-primary dark:text-yellow-400" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium dark:text-gray-400">
-                  New Assignments
-                </p>
-                <p className="text-3xl font-black text-primary dark:text-yellow-400">
-                  {notSubmittedCount}
-                </p>
-              </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {/* New Assignments */}
+        <Card className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-yellow-200 dark:border-yellow-700 shadow-lg">
+          <CardContent className="p-4 text-center">
+            <div className="p-2 bg-yellow-500 rounded-lg w-fit mx-auto mb-2">
+              <BookOpen className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-2xl font-black text-yellow-600 dark:text-yellow-400">
+              {notSubmittedCount}
+            </div>
+            <div className="text-sm font-semibold text-yellow-600 dark:text-yellow-300">
+              New Assignments
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 via-blue-25 to-transparent border-blue-200 shadow-lg dark:from-blue-900/20 dark:via-blue-900/10 dark:border-blue-700">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-secondary/20 rounded-xl dark:bg-secondary/30">
-                <Calendar className="h-6 w-6 text-secondary dark:text-blue-400" />
+        {/* Next Exam */}
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-700 shadow-lg">
+          <CardContent className="p-4 text-center">
+            <div className="p-2 bg-blue-500 rounded-lg w-fit mx-auto mb-2">
+              <Calendar className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-lg font-black text-blue-600 dark:text-blue-400">
+              {studentNextExam
+                ? new Date(studentNextExam?.examDateTime).toLocaleDateString(
+                    "en-US",
+                    { day: "2-digit", month: "short", year: "numeric" }
+                  )
+                : "--"}
+            </div>
+            {studentNextExam?.title && (
+              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">
+                {studentNextExam.title}
               </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium dark:text-gray-400">
-                  Next Exam
-                </p>
-                <p className="text-lg font-black text-secondary dark:text-blue-400">
-                  {studentNextExam
-                    ? new Date(
-                        studentNextExam?.examDateTime
-                      ).toLocaleDateString("en-US", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "--"}
-                </p>
-                {studentNextExam?.title && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {studentNextExam?.title}
-                  </p>
-                )}
-              </div>
+            )}
+            <div className="text-sm font-semibold text-blue-600 dark:text-blue-300">
+              Next Exam
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-red-50 via-red-25 to-transparent border-red-200 shadow-lg dark:from-red-900/20 dark:via-red-900/10 dark:border-red-700">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-red-100 rounded-xl dark:bg-red-800">
-                <CreditCard className="h-6 w-6 text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium dark:text-gray-400">
-                  Due Payment
-                </p>
-                <p className="text-3xl font-black text-red-600 dark:text-red-400">
-                  ৳
-                  {new Intl.NumberFormat("en-US").format(
-                    billingData?.totalDue ?? 0
-                  )}
-                </p>
-              </div>
+        {/* Due Payment */}
+        <Card className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 border-red-200 dark:border-red-700 shadow-lg">
+          <CardContent className="p-4 text-center">
+            <div className="p-2 bg-red-500 rounded-lg w-fit mx-auto mb-2">
+              <CreditCard className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-2xl font-black text-red-600 dark:text-red-400">
+              ৳
+              {new Intl.NumberFormat("en-US").format(
+                billingData?.totalDue ?? 0
+              )}
+            </div>
+            <div className="text-sm font-semibold text-red-600 dark:text-red-300">
+              Due Payment
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 via-green-25 to-transparent border-green-200 shadow-lg dark:from-green-900/20 dark:via-green-900/10 dark:border-green-700">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-green-100 rounded-xl dark:bg-green-800">
-                <Trophy className="h-6 w-6 text-green-600 dark:text-green-400" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium dark:text-gray-400">
-                  Current Rank
-                </p>
-                <p className="text-3xl font-black text-green-600 dark:text-green-400">
-                  #{myRank}
-                </p>
-              </div>
+        {/* Current Rank */}
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-700 shadow-lg">
+          <CardContent className="p-4 text-center">
+            <div className="p-2 bg-green-500 rounded-lg w-fit mx-auto mb-2">
+              <Trophy className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-2xl font-black text-green-600 dark:text-green-400">
+              #{myRank}
+            </div>
+            <div className="text-sm font-semibold text-green-600 dark:text-green-300">
+              Current Rank
             </div>
           </CardContent>
         </Card>
