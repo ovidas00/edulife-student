@@ -418,9 +418,9 @@ export default function RootLayout({ children }) {
                     rights reserved.
                   </p>
                   <div className="flex items-center gap-4 text-sm text-slate-500">
-                    <Link href="/mentors">Our Mentors</Link>
+                    <Link href="/mentors">Mentors</Link>
                     <span>•</span>
-                    <Link href="/courses">Courses/Batches</Link>
+                    <Link href="/courses">Courses</Link>
                     <span>•</span>
                     <a href="https://edulifeuniversity.com/about">About</a>
                   </div>
