@@ -65,13 +65,13 @@ const Rankings = () => {
 
                 {/* Avatar */}
                 <div className="flex-shrink-0">
-                  <Avatar className="h-10 w-10 border-2 border-white shadow-sm dark:border-gray-800">
+                  <Avatar className="h-10 w-10 border-2 border-white shadow-sm border-gray-300 dark:border-gray-400">
                     <AvatarImage
                       src={student.profilePicture || "/placeholder.svg"}
                       alt={student.name}
                       className="object-cover"
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-300">
+                    <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-600">
                       <User className="h-5 w-5" />
                     </AvatarFallback>
                   </Avatar>
