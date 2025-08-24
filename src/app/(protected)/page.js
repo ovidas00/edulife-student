@@ -1,16 +1,22 @@
 "use client";
 
-import { Home, BookOpen, Calendar, CreditCard, Trophy } from "lucide-react";
+import {
+  Home,
+  BookOpen,
+  Calendar,
+  CreditCard,
+  CalendarCheck,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import api from "@/lib/api";
 
 const Index = () => {
-  const { data: leaderboard = [] } = useQuery({
-    queryKey: ["leaderboard"],
+  const { data: attendanceData } = useQuery({
+    queryKey: ["attendance"],
     queryFn: async () => {
-      const response = await api.get("/leaderboard");
-      return response.data.payload.leaderboard;
+      const response = await api.get("/student-attendance");
+      return response.data.payload.summary;
     },
   });
 
@@ -38,11 +44,6 @@ const Index = () => {
     },
   });
 
-  const studentId =
-    typeof window !== "undefined" ? localStorage.getItem("studentId") : null;
-
-  const myPosition = leaderboard?.findIndex((s) => s.studentId === studentId);
-  const myRank = myPosition !== -1 ? myPosition + 1 : null;
   const notSubmittedCount = assignmentsData.reduce(
     (acc, assignment) => acc + (assignment.status === "not_submitted" ? 1 : 0),
     0
@@ -118,17 +119,18 @@ const Index = () => {
           </CardContent>
         </Card>
 
-        {/* Current Rank */}
+        {/* Attendance Card */}
         <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-700 shadow-lg">
           <CardContent className="p-4 text-center">
             <div className="p-2 bg-green-500 rounded-lg w-fit mx-auto mb-2">
-              <Trophy className="h-6 w-6 text-white" />
+              <CalendarCheck className="h-6 w-6 text-white" />
             </div>
             <div className="text-2xl font-black text-green-600 dark:text-green-400">
-              #{myRank}
+              {(attendanceData?.Present ?? 0) + (attendanceData?.Late ?? 0)}/
+              {attendanceData?.total ?? 0}
             </div>
             <div className="text-sm font-semibold text-green-600 dark:text-green-300">
-              Current Rank
+              Attendance
             </div>
           </CardContent>
         </Card>
