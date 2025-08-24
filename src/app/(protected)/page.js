@@ -2,16 +2,29 @@
 
 import {
   Home,
-  BookOpen,
   Calendar,
   CreditCard,
   CalendarCheck,
+  GraduationCap,
+  BookOpen,
+  Pencil,
+  School,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import api from "@/lib/api";
 
 const Index = () => {
+  const dateTime = new Date();
+
+  const { data: student } = useQuery({
+    queryKey: ["student"],
+    queryFn: async () => {
+      const response = await api.get("/student");
+      return response.data.payload.student;
+    },
+  });
+
   const { data: attendanceData } = useQuery({
     queryKey: ["attendance"],
     queryFn: async () => {
@@ -51,13 +64,47 @@ const Index = () => {
 
   return (
     <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-3 bg-green-200/30 dark:bg-green-800/30 rounded-xl">
-          <Home className="h-6 w-6 text-green-600 dark:text-green-400" />
+      <div className="relative w-full h-[200px] rounded-2xl overflow-hidden bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white shadow-lg flex items-center justify-between px-6 md:px-12">
+        {/* Background Icons */}
+        <BookOpen className="absolute top-6 left-8 w-20 h-20 text-white/10 rotate-12" />
+        <GraduationCap className="absolute bottom-6 left-1/3 w-24 h-24 text-white/10 -rotate-12" />
+        <Pencil className="absolute top-4 right-1/3 w-16 h-16 text-white/10" />
+        <School className="absolute bottom-4 right-8 w-20 h-20 text-white/10" />
+
+        {/* Left Content */}
+        <div className="relative flex flex-col gap-2">
+          <h1 className="text-2xl md:text-3xl font-bold drop-shadow-md">
+            {(() => {
+              const hour = dateTime.getHours();
+              const greeting = hour < 12 ? "Good Morning" : "Good Evening";
+              return `${greeting}, ${student?.name?.split(" ")[0]}!`;
+            })()}
+          </h1>
+          <p className="text-sm md:text-base font-medium opacity-90">
+            {dateTime.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+          <p className="text-lg md:text-xl font-semibold">
+            {dateTime.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
         </div>
-        <h1 className="text-3xl font-black text-card-foreground dark:text-white">
-          Dashboard
-        </h1>
+
+        {/* Right Side Decorative Text */}
+        <div className="relative hidden sm:flex flex-col items-end text-right">
+          <p className="text-5xl md:text-6xl font-extrabold opacity-20 leading-none">
+            STUDENT
+          </p>
+          <p className="text-4xl md:text-5xl font-extrabold opacity-20 -mt-2 leading-none">
+            DASHBOARD
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
