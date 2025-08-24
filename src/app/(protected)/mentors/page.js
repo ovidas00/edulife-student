@@ -1,24 +1,27 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Award, Phone } from "lucide-react";
+import { Users, Award } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Mentors = () => {
   // Demo mentor data
   const mentors = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "Mathematics Specialist",
+      name: "Mr. Kollol Roy",
+      role: "English Teacher",
       bio: "10+ years experience in advanced calculus and algebra",
-      image: "https://my.edulifeagency.com/uploads/0bd9c62b8577b0ee1fe4281d8cc3b81d.jpg",
+      image:
+        "https://www.edulifeitschool.com/assets/467473229_1136842197813790_8403178754721686042_n-removebg-preview-j541YkL0.png",
     },
     {
       id: 2,
-      name: "Michael Chen",
-      role: "Physics Professor",
+      name: "Mr. Al Noman",
+      role: "English Teacher",
       bio: "PhD in Quantum Mechanics with research background at CERN",
-      image: "/api/placeholder/200/200",
+      image:
+        "https://www.edulifeitschool.com/assets/462564319_1267897174411048_2389189078393509432_n-bQHTUx4V.jpg",
     },
     {
       id: 3,
@@ -53,15 +56,15 @@ const Mentors = () => {
   return (
     <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900 min-h-screen">
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-3 bg-blue-200/30 dark:bg-blue-800/30 rounded-xl">
-          <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+        <div className="p-3 bg-green-200/30 dark:bg-green-800/30 rounded-xl">
+          <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
         </div>
         <h1 className="text-3xl font-black text-card-foreground dark:text-white">
           Our Mentors
         </h1>
       </div>
 
-      <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
+      <p className="text-gray-600 dark:text-gray-300 mb-8">
         Meet our team of dedicated educators and subject matter experts who are
         committed to helping you achieve your academic goals. Each mentor brings
         unique expertise and teaching experience to provide personalized
@@ -72,29 +75,40 @@ const Mentors = () => {
         {mentors.map((mentor) => (
           <Card
             key={mentor.id}
-            className="overflow-hidden border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 dark:bg-gray-800"
+            className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300 group"
           >
+            {/* Banner */}
             <div className="relative">
-              <div className="h-48 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center">
-                <div className="h-24 w-24 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-                  <Users className="h-12 w-12 text-blue-500 dark:text-blue-400" />
+              <div className="h-40 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center">
+                <div className="h-28 w-28 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden ring-4 ring-white dark:ring-gray-800 transition-all duration-300 group-hover:ring-blue-400">
+                  <Avatar className="h-full w-full">
+                    <AvatarImage
+                      src={mentor?.image || "/placeholder.svg"}
+                      alt={mentor?.name}
+                      className="rounded-full object-cover"
+                    />
+                    <AvatarFallback className="bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400">
+                      <Users className="h-12 w-12" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
               </div>
             </div>
 
-            <CardContent className="p-5 pb-0">
-              <h3 className="font-bold text-xl text-gray-800 dark:text-white mb-1">
+            {/* Content */}
+            <CardContent className="p-5 text-center">
+              <h3 className="font-bold text-xl text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {mentor.name}
               </h3>
 
-              <div className="flex items-center gap-1 mb-3">
+              <div className="flex items-center justify-center gap-2 mt-2">
                 <Award className="h-4 w-4 text-yellow-500" />
-                <span className="text-sm text-yellow-600 dark:text-yellow-400 font-medium">
+                <span className="px-2 py-0.5 text-xs font-medium text-yellow-700 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900 rounded-full">
                   {mentor.role}
                 </span>
               </div>
 
-              <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+              <p className="text-gray-600 dark:text-gray-300 text-sm mt-3 line-clamp-3">
                 {mentor.bio}
               </p>
             </CardContent>

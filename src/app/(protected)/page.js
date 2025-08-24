@@ -91,7 +91,7 @@ const Index = () => {
                 : "--"}
             </div>
             {studentNextExam?.title && (
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
                 {studentNextExam.title}
               </div>
             )}
@@ -128,6 +128,17 @@ const Index = () => {
             <div className="text-2xl font-black text-green-600 dark:text-green-400">
               {(attendanceData?.Present ?? 0) + (attendanceData?.Late ?? 0)}/
               {attendanceData?.total ?? 0}
+            </div>
+            <div className="text-xs text-green-700 dark:text-green-400 mt-1">
+              {attendanceData?.total
+                ? Math.round(
+                    (((attendanceData?.Present ?? 0) +
+                      (attendanceData?.Late ?? 0)) /
+                      attendanceData.total) *
+                      100
+                  )
+                : 0}
+              % attendance rate
             </div>
             <div className="text-sm font-semibold text-green-600 dark:text-green-300">
               Attendance

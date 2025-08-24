@@ -25,6 +25,7 @@ import api from "@/lib/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "lucide-react";
 import { Book } from "lucide-react";
+import Link from "next/link";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -411,11 +412,18 @@ export default function RootLayout({ children }) {
               </div>
 
               <div className="pt-6 border-t border-slate-700 text-center">
-                <div className="text-center">
-                  <p className="text-slate-400 font-medium text-sm">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <p className="text-slate-400 font-medium">
                     © {new Date().getFullYear()} Edulife IT Institute. All
                     rights reserved.
                   </p>
+                  <div className="flex items-center gap-4 text-sm text-slate-500">
+                    <Link href="/mentors">Our Mentors</Link>
+                    <span>•</span>
+                    <Link href="/courses">Courses/Batches</Link>
+                    <span>•</span>
+                    <a href="https://edulifeuniversity.com/about">Support</a>
+                  </div>
                 </div>
               </div>
             </div>
