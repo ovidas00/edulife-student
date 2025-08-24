@@ -76,7 +76,7 @@ const Index = () => {
             {(() => {
               const hour = dateTime.getHours();
               const greeting = hour < 12 ? "Good Morning" : "Good Evening";
-              return `${greeting}, ${student?.name?.split(" ")[0]}!`;
+              return `${greeting}, ${student?.name?.split(" ")[0] || ""}!`;
             })()}
           </h1>
           <p className="text-sm md:text-base font-medium opacity-90">
