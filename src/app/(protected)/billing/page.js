@@ -175,7 +175,7 @@ const Billing = () => {
                       key={invoice._id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
-                      <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary dark:text-primary-dark">
+                      <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-400">
                         #{invoice._id.slice(-6)}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
@@ -247,7 +247,7 @@ const Billing = () => {
                   className="p-4 bg-white border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg shadow border border-border dark:border-border-dark"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-primary dark:text-primary-dark">
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-400">
                       #{invoice._id.slice(-6)}
                     </span>
                     <StatusBadge status={invoice.status} />
