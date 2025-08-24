@@ -125,13 +125,6 @@ const Profile = () => {
                   <User className="h-8 w-8" />
                 </AvatarFallback>
               </Avatar>
-              <Button
-                size="icon"
-                className="absolute bottom-0 right-0 rounded-full bg-primary hover:bg-primary/90 shadow-lg"
-                onClick={() => setIsDialogOpen(false)}
-              >
-                <Upload className="h-4 w-4" />
-              </Button>
             </div>
             <div>
               <h3 className="text-xl font-black dark:text-white">
