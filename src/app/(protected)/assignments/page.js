@@ -502,7 +502,7 @@ const Assignments = () => {
                             setSelectedAssignment(assignment);
                             setIsSubmissionModalOpen(true);
                           }}
-                          className="hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer dark:text-white"
+                          className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
                         >
                           <Play className="h-4 w-4 mr-1" />
                           <span className="sr-only sm:not-sr-only">View</span>
