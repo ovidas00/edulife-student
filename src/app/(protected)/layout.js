@@ -6,6 +6,7 @@ import Image from "next/image";
 import {
   Menu,
   Power,
+  Sun,
   Moon,
   Home,
   Phone,
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
   const [isVerified, setIsVerified] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
 
   // Token verification
   useEffect(() => {
@@ -40,6 +42,31 @@ export default function RootLayout({ children }) {
       setIsVerified(true);
     }
   }, [router]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const savedTheme = localStorage.getItem("theme");
+    let initialTheme = "light";
+
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    } else {
+      initialTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    localStorage.setItem("theme", newTheme);
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -162,7 +189,7 @@ export default function RootLayout({ children }) {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="flex-1 p-4 overflow-y-auto">
+        <nav className="flex-1 p-4 overflow-y-auto scrollbar-thin">
           <ul className="space-y-2">
             {menuItems.map((item, index) => {
               const isActive = pathname === item.href;
@@ -252,8 +279,16 @@ export default function RootLayout({ children }) {
               <button
                 className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"
                 title="Toggle Theme"
+                onClick={toggleTheme}
               >
-                <Moon size={20} className="text-gray-100 dark:text-gray-300" />
+                {theme === "dark" ? (
+                  <Sun size={20} className="text-gray-100 dark:text-gray-300" />
+                ) : (
+                  <Moon
+                    size={20}
+                    className="text-gray-100 dark:text-gray-300"
+                  />
+                )}
               </button>
               <button
                 className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"

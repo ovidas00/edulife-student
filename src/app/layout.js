@@ -1,10 +1,12 @@
-"use client";
-import { Toaster } from "react-hot-toast";
-
 import { Poppins } from "next/font/google";
-import { QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
-import { queryClient } from "@/lib/react-query";
+import ClientProviders from "@/components/ClientProviders";
+
+export const metadata = {
+  title: "Student Portal | Edulife IT Institute",
+  description:
+    "Access your classes, track progress, submit assignments, and stay updated with Edulife IT Institute.",
+};
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -15,10 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <Toaster position="bottom-center" />
-        </QueryClientProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

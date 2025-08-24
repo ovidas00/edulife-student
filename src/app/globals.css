@@ -1,4 +1,29 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light mode scrollbars */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0; /* track color */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a0a0a0; /* thumb color */
+  border-radius: 4px;
+}
+
+/* Dark mode scrollbars */
+.dark *::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
 
 :root {
   --background: #ffffff;
@@ -12,12 +37,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--background);
