@@ -422,7 +422,7 @@ export default function RootLayout({ children }) {
                     <span>•</span>
                     <Link href="/courses">Courses/Batches</Link>
                     <span>•</span>
-                    <a href="https://edulifeuniversity.com/about">Support</a>
+                    <a href="https://edulifeuniversity.com/about">About</a>
                   </div>
                 </div>
               </div>
