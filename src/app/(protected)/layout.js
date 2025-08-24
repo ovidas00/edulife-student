@@ -267,7 +267,7 @@ export default function RootLayout({ children }) {
               </button>
               <div className="flex items-center space-x-3">
                 <Image
-                  src="/icon-500x150-yellow.png"
+                  src="/icon-500x150.png"
                   alt="Logo"
                   width={160}
                   height={120}
@@ -312,7 +312,7 @@ export default function RootLayout({ children }) {
                 <div className="flex items-center justify-center gap-4 mb-4">
                   <div className="w-12 flex-shrink-0 h-12 bg-green-700 rounded-xl flex items-center justify-center shadow-lg">
                     <Image
-                      src="/logo-500x500-yellow.png"
+                      src="/logo-512x512.png"
                       alt="Logo"
                       className="p-2"
                       width={100}
