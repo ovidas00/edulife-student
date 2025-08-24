@@ -312,7 +312,7 @@ const Assignments = () => {
       <div className="space-y-6 p-4 md:p-6 dark:bg-gray-900">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 bg-green-200/30 dark:bg-green-800/30 rounded-xl">
-            <BookOpen className="h-6 w-6 text-primary dark:text-primary-foreground" />
+            <BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
           </div>
           <h1 className="text-3xl font-black text-card-foreground dark:text-white">
             Assignments
