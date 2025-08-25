@@ -13,9 +13,18 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import api from "@/lib/api";
+import { useState } from "react";
 
 const Index = () => {
-  const dateTime = new Date();
+  const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDateTime(new Date());
+    }, 60_000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const { data: student } = useQuery({
     queryKey: ["student"],
