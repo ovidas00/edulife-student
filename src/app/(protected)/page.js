@@ -1,7 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
-  Home,
   Calendar,
   CreditCard,
   CalendarCheck,
@@ -13,7 +13,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import api from "@/lib/api";
-import { useState } from "react";
 
 const Index = () => {
   const [dateTime, setDateTime] = useState(new Date());
