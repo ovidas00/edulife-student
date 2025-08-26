@@ -20,7 +20,7 @@ const Index = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setDateTime(new Date());
-    }, 60_000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -83,7 +83,15 @@ const Index = () => {
           <h1 className="text-2xl md:text-3xl font-bold drop-shadow-md">
             {(() => {
               const hour = dateTime.getHours();
-              const greeting = hour < 12 ? "Good Morning" : "Good Evening";
+              let greeting;
+              if (hour < 12) {
+                greeting = "Good Morning";
+              } else if (hour < 17) {
+                greeting = "Good Afternoon";
+              } else {
+                greeting = "Good Evening";
+              }
+              
               return `${greeting}, ${student?.name?.split(" ")[0] || ""}!`;
             })()}
           </h1>
