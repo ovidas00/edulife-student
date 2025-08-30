@@ -244,9 +244,10 @@ const Index = () => {
                   <h3 className="font-bold text-lg mb-2 dark:text-white">
                     {notice.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-3">
+                  <pre className="text-gray-600 dark:text-gray-300 mb-3 text-sm whitespace-pre-wrap break-words">
                     {notice.content}
-                  </p>
+                  </pre>
+
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {new Date(notice.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
