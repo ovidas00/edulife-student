@@ -35,7 +35,6 @@ export default function PWAInstallPrompt() {
 
     deferredPrompt.prompt();
     const choiceResult = await deferredPrompt.userChoice;
-    console.log("User choice:", choiceResult.outcome); // accepted or dismissed
 
     setDeferredPrompt(null);
     setVisible(false); // hide prompt after interaction
@@ -44,7 +43,7 @@ export default function PWAInstallPrompt() {
   if (!visible || isStandalone) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white rounded-xl shadow-lg p-4 max-w-md w-full z-50">
+    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white rounded-xl shadow-lg p-4 max-w-md w-[95%] z-1000">
       <div className="flex items-center justify-between gap-4">
         <div>
           <div className="font-bold text-lg">Install Our App</div>
@@ -54,7 +53,7 @@ export default function PWAInstallPrompt() {
         </div>
         <button
           onClick={handleInstallClick}
-          className="bg-white text-indigo-600 font-semibold rounded-lg px-4 py-2 hover:bg-gray-100 transition"
+          className="bg-white text-indigo-600 font-semibold rounded-lg px-4 py-2 hover:bg-gray-100 transition cursor-pointer"
         >
           Install
         </button>
