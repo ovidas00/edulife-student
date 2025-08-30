@@ -26,6 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "lucide-react";
 import { Book } from "lucide-react";
 import Link from "next/link";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -304,7 +305,10 @@ export default function RootLayout({ children }) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto">{children}</div>
+          <div className="max-w-7xl mx-auto">
+            <PWAInstallPrompt />
+            {children}
+          </div>
 
           {/* Footer Content */}
           <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
