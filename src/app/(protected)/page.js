@@ -9,6 +9,8 @@ import {
   BookOpen,
   Pencil,
   School,
+  Bell,
+  Receipt,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,6 +67,22 @@ const Index = () => {
     },
   });
 
+  const { data: notice } = useQuery({
+    queryKey: ["notice"],
+    queryFn: async () => {
+      const response = await api.get("/notice");
+      return response.data.payload.notice;
+    },
+  });
+
+  const { data: paymentHistory = [] } = useQuery({
+    queryKey: ["paymentHistory"],
+    queryFn: async () => {
+      const response = await api.get("/payment-history");
+      return response.data.payload.histories || [];
+    },
+  });
+
   const notSubmittedCount = assignmentsData.reduce(
     (acc, assignment) => acc + (assignment.status === "not_submitted" ? 1 : 0),
     0
@@ -91,7 +109,7 @@ const Index = () => {
               } else {
                 greeting = "Good Evening";
               }
-              
+
               return `${greeting}, ${student?.name?.split(" ")[0] || ""}!`;
             })()}
           </h1>
@@ -205,6 +223,86 @@ const Index = () => {
             <div className="text-sm font-semibold text-green-600 dark:text-green-300">
               Attendance
             </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* New Section: Notices and Payment History */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Notices Column */}
+        <Card className="dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <CardHeader className="pb-0">
+            <CardTitle className="flex items-center gap-2 text-lg font-semibold dark:text-white">
+              <Bell className="h-5 w-5 text-blue-500" />
+              Notice
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 py-0">
+            {notice ? (
+              <div className="space-y-4">
+                <div className="p-4 bg-blue-50 rounded-lg dark:bg-blue-900/20">
+                  <h3 className="font-bold text-lg mb-2 dark:text-white">
+                    {notice.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-3">
+                    {notice.content}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {new Date(notice.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                No notices available
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Payment History Column */}
+        <Card className="dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <CardHeader className="pb-0">
+            <CardTitle className="flex items-center gap-2 text-lg font-semibold dark:text-white">
+              <Receipt className="h-5 w-5 text-green-500" />
+              Latest Payments
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 py-0">
+            {paymentHistory.length > 0 ? (
+              <div className="space-y-4">
+                {paymentHistory.slice(0, 5).map((payment) => (
+                  <div
+                    key={payment._id}
+                    className="p-3 bg-green-50 rounded-lg dark:bg-green-900/20 flex justify-between items-center"
+                  >
+                    <div>
+                      <p className="font-semibold dark:text-white">
+                        ৳{payment.amount}
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {payment.method}
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(payment.date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                No payment history available
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
