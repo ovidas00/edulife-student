@@ -472,7 +472,15 @@ const ExamResults = () => {
                             setSelectedExam(exam);
                             setIsDialogOpen(true);
                           }}
-                          className="ml-4 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer dark:text-white"
+                          className="
+    ml-4 
+    text-gray-800 dark:text-gray-100
+    bg-white dark:bg-gray-800
+    border border-gray-300 dark:border-gray-600
+    hover:bg-gray-200 dark:hover:bg-gray-700
+    cursor-pointer
+    transition-colors
+  "
                         >
                           Details
                         </Button>

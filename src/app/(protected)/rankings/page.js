@@ -41,11 +41,11 @@ const Rankings = () => {
                 className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md ${
                   index < 3
                     ? index === 0
-                      ? "bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50 border-l-4 border-yellow-400 dark:border-yellow-600 dark:bg-yellow-800"
+                      ? "bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50 border-l-4 border-yellow-400 dark:border-yellow-500 dark:from-yellow-900 dark:via-yellow-800 dark:to-yellow-900"
                       : index === 1
-                      ? "bg-gradient-to-r from-gray-50 via-gray-50 to-gray-50 border-l-4 border-gray-400 dark:border-gray-600 dark:bg-gray-800"
-                      : "bg-gradient-to-r from-amber-50 via-amber-50 to-amber-50 border-l-4 border-amber-400 dark:border-amber-600 dark:bg-amber-800"
-                    : "bg-white border-l-4 border-gray-200 dark:bg-gray-700 dark:border-gray-600"
+                      ? "bg-gradient-to-r from-gray-50 via-gray-50 to-gray-50 border-l-4 border-gray-400 dark:border-gray-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800"
+                      : "bg-gradient-to-r from-amber-50 via-amber-50 to-amber-50 border-l-4 border-amber-400 dark:border-amber-500 dark:from-amber-900 dark:via-amber-800 dark:to-amber-900"
+                    : "bg-white border-l-4 border-gray-200 dark:bg-gray-800 dark:border-gray-600"
                 }`}
               >
                 {/* Rank Indicator */}
@@ -65,13 +65,13 @@ const Rankings = () => {
 
                 {/* Avatar */}
                 <div className="flex-shrink-0">
-                  <Avatar className="h-10 w-10 border-2 border-white shadow-sm border-gray-300 dark:border-gray-400">
+                  <Avatar className="h-10 w-10 border-2 border-white shadow-sm border-gray-300 dark:border-gray-500">
                     <AvatarImage
                       src={student.profilePicture || "/placeholder.svg"}
                       alt={student.name}
                       className="object-cover"
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-600">
+                    <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-300">
                       <User className="h-5 w-5" />
                     </AvatarFallback>
                   </Avatar>
@@ -79,10 +79,22 @@ const Rankings = () => {
 
                 {/* Student Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className={`font-semibold text-gray-900 truncate ${index > 2 ? "dark:text-white" : "dark:text-gray-700"}`}>
+                  <h3
+                    className={`font-semibold truncate ${
+                      index < 3
+                        ? "text-gray-900 dark:text-white"
+                        : "text-gray-900 dark:text-gray-200"
+                    }`}
+                  >
                     {student.name}
                   </h3>
-                  <p className={`text-xs truncate text-gray-500 dark:text-gray-400 ${index > 2 ? "dark:text-white" : "dark:text-gray-700"}`}>
+                  <p
+                    className={`text-xs truncate ${
+                      index < 3
+                        ? "text-gray-500 dark:text-gray-300"
+                        : "text-gray-500 dark:text-gray-400"
+                    }`}
+                  >
                     {student.session}
                   </p>
                 </div>
@@ -91,8 +103,12 @@ const Rankings = () => {
                 <div className="flex-shrink-0 text-right ml-2">
                   <div
                     className={`text-xl font-bold ${
-                      index < 3
-                        ? "text-gray-900 dark:text-gray-400"
+                      index === 0
+                        ? "text-gray-900 dark:text-yellow-300"
+                        : index === 1
+                        ? "text-gray-900 dark:text-gray-200"
+                        : index === 2
+                        ? "text-gray-900 dark:text-amber-300"
                         : "text-gray-700 dark:text-gray-300"
                     }`}
                   >

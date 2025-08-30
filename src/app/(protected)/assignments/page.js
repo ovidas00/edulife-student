@@ -467,8 +467,8 @@ const Assignments = () => {
                         )}
                         {assignment.status === "submitted" && (
                           <div className="flex items-center gap-1">
-                            <Trophy className="h-4 w-4 text-secondary dark:text-secondary-foreground flex-shrink-0" />
-                            <span className="font-bold text-secondary dark:text-secondary-foreground">
+                            <Trophy className="h-4 w-4 text-yellow-500 dark:text-yellow-400 flex-shrink-0" />
+                            <span className="font-bold text-yellow-600 dark:text-yellow-300">
                               {getStatus(assignment.mark)}
                             </span>
                           </div>
