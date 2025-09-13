@@ -16,6 +16,7 @@ import {
   Link,
   Loader2,
   Info,
+  Facebook,
   Send,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -121,6 +122,7 @@ const Assignments = () => {
       >
         <div className="space-y-6 dark:text-white p-1">
           {/* Video Section */}
+          {/* Video Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-primary dark:text-primary-foreground">
               <Play className="h-5 w-5 flex-shrink-0" />
@@ -128,16 +130,39 @@ const Assignments = () => {
                 Assignment Instructions Video
               </h3>
             </div>
-            <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
-              <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-                  selectedAssignment?.submissionDetails || ""
-                )}?controls=0&modestbranding=1&autoplay=1&rel=0&showinfo=0&fs=0&iv_load_policy=3`}
-                className="w-full h-full"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-              />
-            </div>
+
+            {selectedAssignment?.submissionDetails?.includes("youtube.com") ||
+            selectedAssignment?.submissionDetails?.includes("youtu.be") ? (
+              // YouTube Embed
+              <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+                <iframe
+                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(
+                    selectedAssignment?.submissionDetails || ""
+                  )}?controls=0&modestbranding=1&autoplay=1&rel=0&showinfo=0&fs=0&iv_load_policy=3`}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              </div>
+            ) : selectedAssignment?.submissionDetails?.includes(
+                "facebook.com"
+              ) ? (
+              // Facebook Link Display
+              <div
+                className="flex cursor-pointer flex-col items-center justify-center p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-700"
+                onClick={() =>
+                  window.open(selectedAssignment.submissionDetails, "_blank")
+                }
+              >
+                <Facebook className="h-12 w-12 text-white dark:text-blue-400 mb-3 p-3 rounded-full bg-blue-600" />
+                <p className="px-4 py-2">Click to View Instruction</p>
+              </div>
+            ) : (
+              // Fallback (no valid link)
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                No instruction video provided.
+              </p>
+            )}
           </div>
 
           {/* Assignment Description */}
