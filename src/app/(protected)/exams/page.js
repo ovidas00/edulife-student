@@ -29,6 +29,18 @@ const ExamResults = () => {
       return response.data.payload.exams;
     },
   });
+  const { data: result } = useQuery({
+    queryKey: ["result", selectedExam?._id],
+    queryFn: async () => {
+      if (!selectedExam) return null; // just in case
+
+      const response = await api.get("/exam-result", {
+        params: { exam: selectedExam._id }, // use _id or the correct property
+      });
+      return response.data.payload.result;
+    },
+    enabled: !!selectedExam,
+  });
 
   // Calculate exam statistics
   const examsStats = examsData.reduce(
@@ -91,8 +103,9 @@ const ExamResults = () => {
         </p>
 
         {selectedExam && (
-          <div className="space-y-6 dark:text-white p-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-6 dark:text-white p-0">
+            {/* Total Marks & Your Score */}
+            <div className="grid grid-cols-3 gap-4">
               <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                   Total Marks
@@ -109,80 +122,97 @@ const ExamResults = () => {
                   {selectedExam.studentMark || "Not graded yet"}
                 </p>
               </div>
-            </div>
-
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                Performance
-              </h4>
-              {selectedExam.studentMark ? (
-                <>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Percent className="h-5 w-5" />
-                    <span
-                      className={`text-xl font-bold ${getPerformanceColor(
-                        (selectedExam.studentMark / selectedExam.totalMarks) *
-                          100
-                      )}`}
-                    >
-                      {(
-                        (selectedExam.studentMark / selectedExam.totalMarks) *
-                        100
-                      ).toFixed(1)}
-                      %
-                    </span>
-                    <span
-                      className={`text-sm font-medium ${getPerformanceColor(
-                        (selectedExam.studentMark / selectedExam.totalMarks) *
-                          100
-                      )}`}
-                    >
-                      (
-                      {getPerformanceLabel(
-                        (selectedExam.studentMark / selectedExam.totalMarks) *
-                          100
-                      )}
-                      )
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600">
-                    <div
-                      className={`h-2.5 rounded-full ${
-                        (selectedExam.studentMark / selectedExam.totalMarks) *
-                          100 >=
-                        80
-                          ? "bg-green-600"
-                          : (selectedExam.studentMark /
+              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  Performance
+                </h4>
+                <p className="text-2xl font-bold dark:text-white">
+                  {selectedExam.studentMark ? (
+                    <>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span
+                          className={`text-xl font-bold ${getPerformanceColor(
+                            (selectedExam.studentMark /
                               selectedExam.totalMarks) *
-                              100 >=
-                            60
-                          ? "bg-blue-600"
-                          : (selectedExam.studentMark /
+                              100
+                          )}`}
+                        >
+                          {(
+                            (selectedExam.studentMark /
                               selectedExam.totalMarks) *
-                              100 >=
-                            40
-                          ? "bg-yellow-500"
-                          : "bg-red-600"
-                      }`}
-                      style={{
-                        width: `${
-                          (selectedExam.studentMark / selectedExam.totalMarks) *
-                          100
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                </>
-              ) : (
-                <p className="text-gray-600 dark:text-gray-300">
-                  Not graded yet
+                            100
+                          ).toFixed(1)}
+                          %
+                        </span>
+                        <span
+                          className={`text-sm font-medium ${getPerformanceColor(
+                            (selectedExam.studentMark /
+                              selectedExam.totalMarks) *
+                              100
+                          )}`}
+                        >
+                          (
+                          {getPerformanceLabel(
+                            (selectedExam.studentMark /
+                              selectedExam.totalMarks) *
+                              100
+                          )}
+                          )
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-gray-600 dark:text-gray-300">
+                      Not graded yet
+                    </p>
+                  )}
                 </p>
-              )}
+              </div>
             </div>
 
+            {/* Subject-wise Marks Table */}
+            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                Subject-wise Marks
+              </h4>
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                  <thead className="bg-gray-100 dark:bg-gray-600">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">
+                        Subject
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-600 dark:text-gray-300">
+                        Total Mark
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-600 dark:text-gray-300">
+                        Your Mark
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                    {result?.map((row, idx) => (
+                      <tr key={row.subjectId || idx}>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
+                          {row.subject}
+                        </td>
+                        <td className="px-4 py-2 text-sm text-center text-gray-800 dark:text-gray-200">
+                          {row.totalMark}
+                        </td>
+                        <td className="px-4 py-2 text-sm text-center font-semibold text-gray-900 dark:text-white">
+                          {row.studentMark}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Exam Date */}
             <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                Exam Date
+                Exam Held
               </h4>
               <div className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -199,6 +229,7 @@ const ExamResults = () => {
               </div>
             </div>
 
+            {/* Footer */}
             <div className="flex justify-end">
               <Button
                 onClick={() => setIsDialogOpen(false)}
