@@ -13,8 +13,11 @@ import {
   Calendar,
 } from "lucide-react";
 import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 const Books = () => {
+  const router = useRouter();
+
   const { data: booksData = [] } = useQuery({
     queryKey: ["books"],
     queryFn: async () => {
@@ -24,7 +27,7 @@ const Books = () => {
   });
 
   const handleStartReading = (bookId) => {
-    console.log(`Starting reading book with ID: ${bookId}`);
+    router.push(`/books/${bookId}`);
   };
 
   const getStatusColor = (status) => {
