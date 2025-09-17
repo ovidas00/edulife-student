@@ -113,7 +113,7 @@ const Billing = () => {
 
       <Card className="shadow-lg border-border/50 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-black">
+          <CardTitle className="flex items-center gap-2 text-xl font-black text-gray-900 dark:text-white">
             <CreditCard className="h-6 w-6 text-green-700" />
             Payment History
           </CardTitle>

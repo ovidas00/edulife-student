@@ -267,38 +267,39 @@ const ExamResults = () => {
 
         {/* Overall Performance Card */}
         {examsStats.totalExams > 0 && (
-          <Card className="shadow-lg border-border/50 border-gray-200 dark:border-gray-700 mb-6">
+          <Card className="shadow-lg border border-gray-200 dark:border-gray-700 mb-6">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-xl font-black dark:text-white">
+              <CardTitle className="flex items-center gap-2 text-xl font-black text-gray-900 dark:text-white">
                 <Percent className="h-6 w-6 text-green-600 dark:text-green-400" />
                 Overall Performance
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Marks Summary */}
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg dark:text-white">
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
                     Marks Summary
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground dark:text-gray-400">
+                      <span className="text-gray-600 dark:text-gray-400">
                         Total Marks Obtained
                       </span>
-                      <span className="font-medium dark:text-white">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {examsStats.totalObtainedMarks}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground dark:text-gray-400">
+                      <span className="text-gray-600 dark:text-gray-400">
                         Total Possible Marks
                       </span>
-                      <span className="font-medium dark:text-white">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {examsStats.totalPossibleMarks}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground dark:text-gray-400">
+                      <span className="text-gray-600 dark:text-gray-400">
                         Overall Percentage
                       </span>
                       <span
@@ -318,42 +319,56 @@ const ExamResults = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Performance Breakdown */}
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg dark:text-white">
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
                     Performance Breakdown
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span className="text-sm">Excellent (80%+)</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Excellent (80%+)
+                        </span>
                       </div>
-                      <span className="font-medium">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {examsStats.excellent}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                        <span className="text-sm">Good (60-79%)</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Good (60-79%)
+                        </span>
                       </div>
-                      <span className="font-medium">{examsStats.good}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {examsStats.good}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <span className="text-sm">Average (40-59%)</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Average (40-59%)
+                        </span>
                       </div>
-                      <span className="font-medium">{examsStats.average}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {examsStats.average}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <span className="text-sm">
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
                           Needs Improvement (Below 40%)
                         </span>
                       </div>
-                      <span className="font-medium">{examsStats.poor}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {examsStats.poor}
+                      </span>
                     </div>
                   </div>
                 </div>
