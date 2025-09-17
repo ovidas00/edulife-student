@@ -18,6 +18,7 @@ import {
   BookOpen,
   Trophy,
   CheckCircle,
+  Bookmark,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
@@ -107,6 +108,7 @@ export default function RootLayout({ children }) {
     { icon: Book, label: "Exam Results", href: "/exams" },
     { icon: CreditCard, label: "Billing", href: "/billing" },
     { icon: Trophy, label: "Rankings", href: "/rankings" },
+    { icon: Bookmark, label: "Books", href: "/books" },
     { icon: User, label: "Profile", href: "/profile" },
   ];
 
