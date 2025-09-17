@@ -105,7 +105,7 @@ const ExamResults = () => {
         {selectedExam && (
           <div className="space-y-6 dark:text-white p-0">
             {/* Total Marks & Your Score */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                   Total Marks
@@ -120,52 +120,6 @@ const ExamResults = () => {
                 </h4>
                 <p className="text-2xl font-bold dark:text-white">
                   {selectedExam.studentMark || "Not graded yet"}
-                </p>
-              </div>
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                  Performance
-                </h4>
-                <p className="text-2xl font-bold dark:text-white">
-                  {selectedExam.studentMark ? (
-                    <>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span
-                          className={`text-xl font-bold ${getPerformanceColor(
-                            (selectedExam.studentMark /
-                              selectedExam.totalMarks) *
-                              100
-                          )}`}
-                        >
-                          {(
-                            (selectedExam.studentMark /
-                              selectedExam.totalMarks) *
-                            100
-                          ).toFixed(1)}
-                          %
-                        </span>
-                        <span
-                          className={`text-sm font-medium ${getPerformanceColor(
-                            (selectedExam.studentMark /
-                              selectedExam.totalMarks) *
-                              100
-                          )}`}
-                        >
-                          (
-                          {getPerformanceLabel(
-                            (selectedExam.studentMark /
-                              selectedExam.totalMarks) *
-                              100
-                          )}
-                          )
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Not graded yet
-                    </p>
-                  )}
                 </p>
               </div>
             </div>
