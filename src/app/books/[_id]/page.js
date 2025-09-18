@@ -386,7 +386,7 @@ export default function BookReader({ params }) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="flex items-center p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <header className="flex items-center py-4 px-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center min-w-0 flex-1">
             <button
               onClick={() => setSidebarOpen(true)}
