@@ -22,13 +22,37 @@ export default function BookReader({ params }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentModuleId, setCurrentModuleId] = useState(null);
   const [currentLessonId, setCurrentLessonId] = useState(null);
-  const [expandedModules, setExpandedModules] = useState({}); // For collapsible modules
+  const [expandedModules, setExpandedModules] = useState({});
 
   const [bookInfo, setBookInfo] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
   const quillViewerRef = useRef(null);
   const quillInstance = useRef(null);
+
+  // Disable copy, right-click, text selection
+  useEffect(() => {
+    const handleContextMenu = (e) => e.preventDefault();
+    const handleSelectStart = (e) => e.preventDefault();
+    const handleKeyDown = (e) => {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        ["c", "x", "a"].includes(e.key.toLowerCase())
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("selectstart", handleSelectStart);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("selectstart", handleSelectStart);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // Load book from sessionStorage
   useEffect(() => {
@@ -42,19 +66,16 @@ export default function BookReader({ params }) {
     }
   }, []);
 
+  // Load dark mode from localStorage / system preference
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const savedTheme = localStorage.getItem("theme");
-    let initialTheme = "light";
-
-    if (savedTheme) {
-      initialTheme = savedTheme;
-    } else {
-      initialTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    let initialTheme =
+      savedTheme ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
-        : "light";
-    }
+        : "light");
 
     document.documentElement.classList.toggle("dark", initialTheme === "dark");
   }, []);
@@ -83,7 +104,7 @@ export default function BookReader({ params }) {
     }
   }, [bookId, currentModuleId, currentLessonId]);
 
-  // Fetch book for sidebar
+  // Fetch book data
   const { data: bookData } = useQuery({
     queryKey: ["book", bookId],
     queryFn: async () => {
@@ -105,38 +126,32 @@ export default function BookReader({ params }) {
     enabled: !!currentModuleId && !!currentLessonId,
   });
 
-  // Initialize Quill viewer only once
+  // Initialize Quill
   useEffect(() => {
-    if (!quillViewerRef.current) return;
-    if (!quillInstance.current) {
-      quillInstance.current = new Quill(quillViewerRef.current, {
-        theme: "snow",
-        readOnly: true,
-        modules: { toolbar: false },
-      });
-    }
+    if (!quillViewerRef.current || quillInstance.current) return;
+    quillInstance.current = new Quill(quillViewerRef.current, {
+      theme: "snow",
+      readOnly: true,
+      modules: { toolbar: false },
+    });
   }, []);
 
-  // Update lesson content instantly when lessonData changes
+  // Update Quill content
   useEffect(() => {
     if (!quillInstance.current || !lessonData) return;
-
     quillInstance.current.setContents([]);
     quillInstance.current.clipboard.dangerouslyPasteHTML(
       lessonData.contentHTML || ""
     );
-
     quillViewerRef.current.scrollTop = 0;
   }, [lessonData]);
 
-  // Handle lesson navigation
   const navigateToLesson = (moduleId, lessonId) => {
     setCurrentModuleId(moduleId);
     setCurrentLessonId(lessonId);
     setSidebarOpen(false);
   };
 
-  // Toggle module collapse
   const toggleModule = (moduleId) => {
     setExpandedModules((prev) => ({
       ...prev,
@@ -146,17 +161,80 @@ export default function BookReader({ params }) {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  // Inside your component, before return
+  // Safe Previous/Next helpers
+  const findPrevLesson = (moduleId, lessonId) => {
+    if (!bookData?.modules?.length)
+      return { prevModuleId: null, prevLessonId: null };
+
+    for (let i = 0; i < bookData.modules.length; i++) {
+      const mod = bookData.modules[i];
+      if (!mod.lessons?.length) continue;
+      for (let j = 0; j < mod.lessons.length; j++) {
+        const lesson = mod.lessons[j];
+        if (lesson._id === lessonId) {
+          if (j > 0)
+            return {
+              prevModuleId: mod._id,
+              prevLessonId: mod.lessons[j - 1]._id,
+            };
+          else if (i > 0) {
+            const prevMod = bookData.modules[i - 1];
+            const lastLesson = prevMod.lessons?.[prevMod.lessons.length - 1];
+            if (lastLesson)
+              return {
+                prevModuleId: prevMod._id,
+                prevLessonId: lastLesson._id,
+              };
+          }
+          return { prevModuleId: null, prevLessonId: null };
+        }
+      }
+    }
+    return { prevModuleId: null, prevLessonId: null };
+  };
+
+  const findNextLesson = (moduleId, lessonId) => {
+    if (!bookData?.modules?.length)
+      return { nextModuleId: null, nextLessonId: null };
+
+    for (let i = 0; i < bookData.modules.length; i++) {
+      const mod = bookData.modules[i];
+      if (!mod.lessons?.length) continue;
+      for (let j = 0; j < mod.lessons.length; j++) {
+        const lesson = mod.lessons[j];
+        if (lesson._id === lessonId) {
+          if (j < mod.lessons.length - 1)
+            return {
+              nextModuleId: mod._id,
+              nextLessonId: mod.lessons[j + 1]._id,
+            };
+          else if (i < bookData.modules.length - 1) {
+            const nextMod = bookData.modules[i + 1];
+            const firstLesson = nextMod.lessons?.[0];
+            if (firstLesson)
+              return {
+                nextModuleId: nextMod._id,
+                nextLessonId: firstLesson._id,
+              };
+          }
+          return { nextModuleId: null, nextLessonId: null };
+        }
+      }
+    }
+    return { nextModuleId: null, nextLessonId: null };
+  };
+
   const currentModule = bookData?.modules?.find(
     (mod) => mod._id === currentModuleId
   );
   const currentModuleTitle = currentModule?.title;
+  const currentModuleOrder = currentModule?.order;
 
   return (
     <div
       className={`${
         darkMode ? "dark" : ""
-      } flex h-screen bg-gray-50 dark:bg-gray-900`}
+      } flex h-screen bg-gray-50 dark:bg-gray-900 select-none`}
     >
       {/* Sidebar */}
       <div
@@ -235,29 +313,29 @@ export default function BookReader({ params }) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
         <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
           <div className="flex items-center">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-1 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 lg:hidden"
+              className="p-1 cursor-pointer rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 lg:hidden"
             >
               <Menu size={24} />
             </button>
 
-            <div className="flex items-center px-3">
+            <div className="flex items-start px-3">
               <BookOpen
                 size={18}
-                className="text-gray-500 dark:text-gray-400 mr-2"
+                className="flex-shrink-0 text-gray-500 dark:text-gray-400 mr-2"
               />
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {currentModuleTitle ? `Module: ${currentModuleTitle}` : ""}
+              <span className="text-sm text-gray-600 dark:text-gray-300 break-words">
+                {currentModuleTitle
+                  ? `Module ${currentModuleOrder}: ${currentModuleTitle}`
+                  : ""}
               </span>
             </div>
           </div>
         </header>
 
-        {/* Reading Content */}
         <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
           <div className="max-w-3xl mx-auto px-4 py-6">
             {isFetching && (
@@ -268,9 +346,14 @@ export default function BookReader({ params }) {
 
             {/* Lesson Title */}
             {lessonData && (
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                Lesson {lessonData.order}: {lessonData.title}
-              </h1>
+              <div className="mb-4">
+                <span className="text-base ml-2 text-gray-500 dark:text-gray-400 block">
+                  Lesson {lessonData.order}:
+                </span>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 inline ml-2">
+                  {lessonData.title}
+                </h1>
+              </div>
             )}
 
             {/* Quill Viewer */}
@@ -284,6 +367,39 @@ export default function BookReader({ params }) {
                 Select a lesson to start reading.
               </p>
             )}
+
+            {/* Previous / Next Buttons */}
+            {lessonData && (
+              <div className="flex justify-between mt-6">
+                <button
+                  onClick={() => {
+                    const { prevModuleId, prevLessonId } = findPrevLesson(
+                      currentModuleId,
+                      currentLessonId
+                    );
+                    if (prevLessonId)
+                      navigateToLesson(prevModuleId, prevLessonId);
+                  }}
+                  className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50"
+                >
+                  Previous
+                </button>
+
+                <button
+                  onClick={() => {
+                    const { nextModuleId, nextLessonId } = findNextLesson(
+                      currentModuleId,
+                      currentLessonId
+                    );
+                    if (nextLessonId)
+                      navigateToLesson(nextModuleId, nextLessonId);
+                  }}
+                  className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </main>
       </div>
@@ -291,28 +407,11 @@ export default function BookReader({ params }) {
       {/* Table Styles */}
       <style>
         {`
-          .ql-editor {
-            color: #111827; /* default text for light mode */
-          }
-
-          .dark .ql-editor {
-            color: #f9fafb; /* light text for dark mode */
-            background-color: #111827; /* optional, in case background wasn't set */
-          }
-
-          .ql-editor table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          .ql-editor td,
-          .ql-editor th {
-            border: 1px solid #d1d5db;
-            padding: 0.5rem;
-          }
-          .dark .ql-editor td,
-          .dark .ql-editor th {
-            border-color: #4b5563;
-          }
+          .ql-editor { color: #111827; }
+          .dark .ql-editor { color: #f9fafb; background-color: #111827; }
+          .ql-editor table { width: 100%; border-collapse: collapse; }
+          .ql-editor td, .ql-editor th { border: 1px solid #d1d5db; padding: 0.5rem; }
+          .dark .ql-editor td, .dark .ql-editor th { border-color: #4b5563; }
         `}
       </style>
     </div>
