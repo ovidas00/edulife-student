@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { BookOpen, Menu, X, List, Sun, Moon } from "lucide-react";
+import {
+  BookOpen,
+  Menu,
+  X,
+  List,
+  Sun,
+  Moon,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
@@ -13,6 +22,7 @@ export default function BookReader({ params }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentModuleId, setCurrentModuleId] = useState(null);
   const [currentLessonId, setCurrentLessonId] = useState(null);
+  const [expandedModules, setExpandedModules] = useState({}); // For collapsible modules
 
   const [bookInfo, setBookInfo] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
@@ -30,6 +40,23 @@ export default function BookReader({ params }) {
         console.error("Invalid stored book data", e);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const savedTheme = localStorage.getItem("theme");
+    let initialTheme = "light";
+
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    } else {
+      initialTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    document.documentElement.classList.toggle("dark", initialTheme === "dark");
   }, []);
 
   // Load progress from localStorage
@@ -94,12 +121,11 @@ export default function BookReader({ params }) {
   useEffect(() => {
     if (!quillInstance.current || !lessonData) return;
 
-    quillInstance.current.setContents([]); // clear previous content
+    quillInstance.current.setContents([]);
     quillInstance.current.clipboard.dangerouslyPasteHTML(
       lessonData.contentHTML || ""
     );
 
-    // Scroll to top on new lesson
     quillViewerRef.current.scrollTop = 0;
   }, [lessonData]);
 
@@ -108,6 +134,14 @@ export default function BookReader({ params }) {
     setCurrentModuleId(moduleId);
     setCurrentLessonId(lessonId);
     setSidebarOpen(false);
+  };
+
+  // Toggle module collapse
+  const toggleModule = (moduleId) => {
+    setExpandedModules((prev) => ({
+      ...prev,
+      [moduleId]: !prev[moduleId],
+    }));
   };
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
@@ -150,26 +184,39 @@ export default function BookReader({ params }) {
                     key={module._id}
                     className="border-l-2 border-gray-200 dark:border-gray-700 pl-4"
                   >
-                    <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                      {module.title}
-                    </h3>
-                    <div className="space-y-2">
-                      {module.lessons.map((lesson) => (
-                        <button
-                          key={lesson._id}
-                          onClick={() =>
-                            navigateToLesson(module._id, lesson._id)
-                          }
-                          className={`block w-full text-left p-2 rounded-md text-sm ${
-                            currentLessonId === lesson._id
-                              ? "bg-blue-50 text-blue-700 font-medium dark:bg-blue-900/40 dark:text-blue-300"
-                              : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-                          }`}
-                        >
-                          {lesson.title}
-                        </button>
-                      ))}
-                    </div>
+                    <button
+                      onClick={() => toggleModule(module._id)}
+                      className="flex items-center justify-between w-full text-left font-medium text-gray-800 dark:text-gray-200 mb-2"
+                    >
+                      <span className="flex-1 truncate">{module.title}</span>
+                      <span className="flex-shrink-0 ml-2">
+                        {expandedModules[module._id] ? (
+                          <ChevronDown size={16} />
+                        ) : (
+                          <ChevronRight size={16} />
+                        )}
+                      </span>
+                    </button>
+
+                    {expandedModules[module._id] && (
+                      <div className="space-y-2">
+                        {module.lessons.map((lesson) => (
+                          <button
+                            key={lesson._id}
+                            onClick={() =>
+                              navigateToLesson(module._id, lesson._id)
+                            }
+                            className={`block w-full text-left p-2 rounded-md text-sm ${
+                              currentLessonId === lesson._id
+                                ? "bg-blue-50 text-blue-700 font-medium dark:bg-blue-900/40 dark:text-blue-300"
+                                : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                            }`}
+                          >
+                            {lesson.title}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -200,19 +247,11 @@ export default function BookReader({ params }) {
               </span>
             </div>
           </div>
-
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
         </header>
 
         {/* Reading Content */}
         <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
-          <div className="max-w-3xl mx-auto p-6 py-8">
+          <div className="max-w-3xl mx-auto px-4 py-6">
             {isFetching && (
               <p className="text-gray-500 dark:text-gray-400 text-center">
                 Loading lesson...
@@ -244,6 +283,15 @@ export default function BookReader({ params }) {
       {/* Table Styles */}
       <style>
         {`
+          .ql-editor {
+            color: #111827; /* default text for light mode */
+          }
+
+          .dark .ql-editor {
+            color: #f9fafb; /* light text for dark mode */
+            background-color: #111827; /* optional, in case background wasn't set */
+          }
+
           .ql-editor table {
             width: 100%;
             border-collapse: collapse;
