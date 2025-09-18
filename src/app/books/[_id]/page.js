@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BookOpen, Menu, X, List, Sun, Moon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
 import api from "@/lib/api";
 
 export default function BookReader({ params }) {
@@ -12,8 +14,11 @@ export default function BookReader({ params }) {
   const [currentModuleId, setCurrentModuleId] = useState(null);
   const [currentLessonId, setCurrentLessonId] = useState(null);
 
-  const [bookInfo, setBookInfo] = useState(null); // book from sessionStorage
+  const [bookInfo, setBookInfo] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+
+  const quillViewerRef = useRef(null);
+  const quillInstance = useRef(null);
 
   // Load book from sessionStorage
   useEffect(() => {
@@ -27,7 +32,7 @@ export default function BookReader({ params }) {
     }
   }, []);
 
-  // Load progress from localStorage on mount
+  // Load progress from localStorage
   useEffect(() => {
     const savedProgress = localStorage.getItem(`book-progress-${bookId}`);
     if (savedProgress) {
@@ -41,7 +46,7 @@ export default function BookReader({ params }) {
     }
   }, [bookId]);
 
-  // Save progress when lesson changes
+  // Save progress
   useEffect(() => {
     if (currentModuleId && currentLessonId) {
       localStorage.setItem(
@@ -51,17 +56,17 @@ export default function BookReader({ params }) {
     }
   }, [bookId, currentModuleId, currentLessonId]);
 
-  // Fetch book with modules + lessons (for sidebar)
+  // Fetch book for sidebar
   const { data: bookData } = useQuery({
     queryKey: ["book", bookId],
     queryFn: async () => {
       const res = await api.get(`/books/${bookId}`);
-      return res.data.payload; // contains { modules: [...] }
+      return res.data.payload;
     },
   });
 
-  // Fetch lesson content when lesson is selected
-  const { data: lessonData } = useQuery({
+  // Fetch lesson content
+  const { data: lessonData, isFetching } = useQuery({
     queryKey: ["lesson", currentModuleId, currentLessonId],
     queryFn: async () => {
       if (!currentModuleId || !currentLessonId) return null;
@@ -73,14 +78,38 @@ export default function BookReader({ params }) {
     enabled: !!currentModuleId && !!currentLessonId,
   });
 
-  // Handle navigation
+  // Initialize Quill viewer only once
+  useEffect(() => {
+    if (!quillViewerRef.current) return;
+    if (!quillInstance.current) {
+      quillInstance.current = new Quill(quillViewerRef.current, {
+        theme: "snow",
+        readOnly: true,
+        modules: { toolbar: false },
+      });
+    }
+  }, []);
+
+  // Update lesson content instantly when lessonData changes
+  useEffect(() => {
+    if (!quillInstance.current || !lessonData) return;
+
+    quillInstance.current.setContents([]); // clear previous content
+    quillInstance.current.clipboard.dangerouslyPasteHTML(
+      lessonData.contentHTML || ""
+    );
+
+    // Scroll to top on new lesson
+    quillViewerRef.current.scrollTop = 0;
+  }, [lessonData]);
+
+  // Handle lesson navigation
   const navigateToLesson = (moduleId, lessonId) => {
     setCurrentModuleId(moduleId);
     setCurrentLessonId(lessonId);
     setSidebarOpen(false);
   };
 
-  // Toggle dark mode
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   return (
@@ -184,18 +213,26 @@ export default function BookReader({ params }) {
         {/* Reading Content */}
         <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
           <div className="max-w-3xl mx-auto p-6 py-8">
-            {lessonData ? (
-              <>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                  {lessonData.title}
-                </h1>
+            {isFetching && (
+              <p className="text-gray-500 dark:text-gray-400 text-center">
+                Loading lesson...
+              </p>
+            )}
 
-                <div
-                  className="prose max-w-none dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: lessonData.contentHTML }}
-                ></div>
-              </>
-            ) : (
+            {/* Lesson Title */}
+            {lessonData && (
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                {lessonData.title}
+              </h1>
+            )}
+
+            {/* Quill Viewer */}
+            <div
+              ref={quillViewerRef}
+              className="ql-snow bg-white dark:bg-gray-900"
+              style={{ minHeight: "400px" }}
+            />
+            {!lessonData && !isFetching && (
               <p className="text-gray-500 dark:text-gray-400">
                 Select a lesson to start reading.
               </p>
@@ -203,6 +240,25 @@ export default function BookReader({ params }) {
           </div>
         </main>
       </div>
+
+      {/* Table Styles */}
+      <style>
+        {`
+          .ql-editor table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          .ql-editor td,
+          .ql-editor th {
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+          }
+          .dark .ql-editor td,
+          .dark .ql-editor th {
+            border-color: #4b5563;
+          }
+        `}
+      </style>
     </div>
   );
 }
