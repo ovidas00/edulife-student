@@ -407,14 +407,14 @@ export default function BookReader({ params }) {
           </div>
 
           <div className="ml-auto flex gap-x-2 flex-shrink-0">
-            <button
+            {/* <button
               title="Toggle Theme"
               onClick={toggleDarkMode}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-white cursor-pointer"
               aria-label="Toggle dark mode"
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            </button> */}
 
             <button
               onClick={() => router.replace("/")}
