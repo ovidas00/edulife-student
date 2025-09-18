@@ -81,7 +81,7 @@ const Books = () => {
               )}
 
               {/* Status Badge */}
-              <div className="absolute top-4 right-4">
+              {/* <div className="absolute top-4 right-4">
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm ${getStatusColor(
                     book.status
@@ -89,7 +89,7 @@ const Books = () => {
                 >
                   {book.status}
                 </span>
-              </div>
+              </div> */}
             </div>
 
             {/* Card Content */}
@@ -166,7 +166,10 @@ const Books = () => {
               </div>
 
               <button
-                onClick={() => handleStartReading(book._id)}
+                onClick={() => {
+                  handleStartReading(book._id);
+                  sessionStorage.setItem("book", JSON.stringify(book));
+                }}
                 className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg flex items-center justify-center gap-2 py-3 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               >
                 <Play className="h-4 w-4" />
