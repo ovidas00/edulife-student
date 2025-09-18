@@ -387,7 +387,7 @@ export default function BookReader({ params }) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="flex items-center p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center">
+          <div className="flex items-center min-w-0 flex-1">
             <button
               onClick={() => setSidebarOpen(true)}
               className="p-2 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 lg:hidden mr-2"
@@ -395,20 +395,18 @@ export default function BookReader({ params }) {
               <Menu size={20} />
             </button>
 
-            <div className="flex items-center px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <BookOpen
-                size={16}
-                className="flex-shrink-0 text-gray-500 dark:text-gray-400 mr-2"
-              />
-              <span className="text-sm text-gray-600 dark:text-gray-300 break-words max-w-xs truncate">
-                {currentModuleTitle
-                  ? `Module ${currentModuleOrder}: ${currentModuleTitle}`
-                  : "Select a lesson to begin"}
-              </span>
-            </div>
+            <BookOpen
+              size={16}
+              className="flex-shrink-0 text-gray-500 dark:text-gray-400 mr-2"
+            />
+            <span className="text-sm text-gray-600 dark:text-gray-300 whitespace-normal break-words">
+              {currentModuleTitle
+                ? `Module ${currentModuleOrder}: ${currentModuleTitle}`
+                : "Select a lesson to begin"}
+            </span>
           </div>
 
-          <div className="ml-auto flex gap-x-2">
+          <div className="ml-auto flex gap-x-2 flex-shrink-0">
             <button
               title="Toggle Theme"
               onClick={toggleDarkMode}
@@ -422,7 +420,7 @@ export default function BookReader({ params }) {
               onClick={() => router.replace("/")}
               title="Close"
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-white cursor-pointer"
-              aria-label="Toggle dark mode"
+              aria-label="Close"
             >
               <XCircle size={20} />
             </button>
@@ -442,7 +440,7 @@ export default function BookReader({ params }) {
 
             {/* Lesson Title */}
             {lessonData && (
-              <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full font-medium">
                     Lesson {lessonData.order}
