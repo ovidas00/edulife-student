@@ -146,6 +146,12 @@ export default function BookReader({ params }) {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
+  // Inside your component, before return
+  const currentModule = bookData?.modules?.find(
+    (mod) => mod._id === currentModuleId
+  );
+  const currentModuleTitle = currentModule?.title;
+
   return (
     <div
       className={`${
@@ -188,7 +194,9 @@ export default function BookReader({ params }) {
                       onClick={() => toggleModule(module._id)}
                       className="flex items-center justify-between w-full text-left font-medium text-gray-800 dark:text-gray-200 mb-2"
                     >
-                      <span className="flex-1 truncate">{module.title}</span>
+                      <span className="flex-1 truncate">
+                        Module {module.order}: {module.title}
+                      </span>
                       <span className="flex-shrink-0 ml-2">
                         {expandedModules[module._id] ? (
                           <ChevronDown size={16} />
@@ -212,7 +220,7 @@ export default function BookReader({ params }) {
                                 : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
                             }`}
                           >
-                            {lesson.title}
+                            Lesson {lesson.order}: {lesson.title}
                           </button>
                         ))}
                       </div>
@@ -243,7 +251,7 @@ export default function BookReader({ params }) {
                 className="text-gray-500 dark:text-gray-400 mr-2"
               />
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                {lessonData ? lessonData.title : "Select a lesson"}
+                {currentModuleTitle ? `Module: ${currentModuleTitle}` : ""}
               </span>
             </div>
           </div>
@@ -261,7 +269,7 @@ export default function BookReader({ params }) {
             {/* Lesson Title */}
             {lessonData && (
               <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                {lessonData.title}
+                Lesson {lessonData.order}: {lessonData.title}
               </h1>
             )}
 
