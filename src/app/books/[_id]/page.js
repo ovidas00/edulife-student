@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import {
   BookOpen,
   Menu,
@@ -14,10 +15,10 @@ import {
   XCircle,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import Quill from "quill";
 import { useRouter } from "next/navigation";
 import "quill/dist/quill.snow.css";
 import api from "@/lib/api";
+const Quill = dynamic(() => import("quill"), { ssr: false });
 
 export default function BookReader({ params }) {
   const { _id: bookId } = React.use(params);
@@ -33,30 +34,6 @@ export default function BookReader({ params }) {
 
   const quillViewerRef = useRef(null);
   const quillInstance = useRef(null);
-
-  // Disable copy, right-click, text selection
-  useEffect(() => {
-    const handleContextMenu = (e) => e.preventDefault();
-    const handleSelectStart = (e) => e.preventDefault();
-    const handleKeyDown = (e) => {
-      if (
-        (e.ctrlKey || e.metaKey) &&
-        ["c", "x", "a"].includes(e.key.toLowerCase())
-      ) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("selectstart", handleSelectStart);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("selectstart", handleSelectStart);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   // Load book from sessionStorage
   useEffect(() => {
@@ -159,10 +136,13 @@ export default function BookReader({ params }) {
   // Initialize Quill
   useEffect(() => {
     if (!quillViewerRef.current || quillInstance.current) return;
-    quillInstance.current = new Quill(quillViewerRef.current, {
-      theme: "snow",
-      readOnly: true,
-      modules: { toolbar: false },
+
+    import("quill").then(({ default: Quill }) => {
+      quillInstance.current = new Quill(quillViewerRef.current, {
+        theme: "snow",
+        readOnly: true,
+        modules: { toolbar: false },
+      });
     });
   }, []);
 
@@ -439,7 +419,7 @@ export default function BookReader({ params }) {
             )}
 
             {/* Lesson Title */}
-            {lessonData && (
+            {lessonData && !isFetching && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full font-medium">
@@ -452,10 +432,12 @@ export default function BookReader({ params }) {
               </div>
             )}
 
-            {/* Quill Viewer - Preserved exactly as you had it */}
+            {/* Quill Viewer */}
             <div
               ref={quillViewerRef}
-              className="ql-snow bg-white dark:bg-gray-900 border-0 p-0"
+              className={`ql-snow bg-white dark:bg-gray-900 border-0 p-0 ${
+                isFetching && "hidden"
+              }`}
               style={{ minHeight: "400px" }}
             />
 
@@ -467,7 +449,7 @@ export default function BookReader({ params }) {
             )}
 
             {/* Previous / Next Buttons */}
-            {lessonData && (
+            {lessonData && !isFetching && (
               <div className="flex justify-between mt-12 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <button
                   onClick={() => {
@@ -508,6 +490,13 @@ export default function BookReader({ params }) {
               border: none !important;
               padding: 0 !important;
           }
+          .ql-code-block {
+            user-select: text;       /* allow text selection */
+            white-space: pre-wrap;   /* preserve formatting but allow wrapping */
+            font-family: monospace;  /* makes it look like code */
+            cursor: text;            /* show text cursor */
+          }
+
         `}
       </style>
     </div>
