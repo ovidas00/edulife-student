@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const Books = () => {
   const router = useRouter();
@@ -67,10 +68,12 @@ const Books = () => {
             <div className="relative h-56 overflow-hidden rounded-t-2xl">
               {book.coverImage ? (
                 <>
-                  <img
+                  <Image
                     src={book.coverImage}
                     alt={book.title}
                     className="h-full w-full object-cover"
+                    width={300}
+                    height={150}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/60 via-black/10 dark:via-black/20 to-transparent"></div>
                 </>
