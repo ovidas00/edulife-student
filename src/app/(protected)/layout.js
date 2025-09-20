@@ -19,6 +19,7 @@ import {
   Trophy,
   CheckCircle,
   Bookmark,
+  Download,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
@@ -27,7 +28,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "lucide-react";
 import { Book } from "lucide-react";
 import Link from "next/link";
-import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import usePWAInstall from "@/lib/pwa";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
   const [isVerified, setIsVerified] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const { canInstall, handleInstall } = usePWAInstall();
 
   // Token verification
   useEffect(() => {
@@ -280,6 +282,19 @@ export default function RootLayout({ children }) {
             </div>
 
             <div className="flex items-center space-x-4">
+              {canInstall && (
+                <button
+                  className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"
+                  title="Install App"
+                  onClick={handleInstall}
+                >
+                  <Download
+                    size={20}
+                    className="text-gray-100 dark:text-gray-300"
+                  />
+                </button>
+              )}
+
               <button
                 className="p-2 bg-green-600 dark:bg-gray-700 cursor-pointer rounded-full hover:bg-green-500 dark:hover:bg-gray-700 transition-colors"
                 title="Toggle Theme"
@@ -307,10 +322,7 @@ export default function RootLayout({ children }) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto">
-            <PWAInstallPrompt />
-            {children}
-          </div>
+          <div className="max-w-7xl mx-auto">{children}</div>
 
           {/* Footer Content */}
           <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
