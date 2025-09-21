@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import "quill/dist/quill.snow.css";
 import api from "@/lib/api";
+import Image from "next/image";
 const Quill = dynamic(() => import("quill"), { ssr: false });
 
 export default function BookReader({ params }) {
@@ -433,20 +434,42 @@ export default function BookReader({ params }) {
             )}
 
             {/* Quill Viewer */}
-            <div
-              ref={quillViewerRef}
-              className={`ql-snow bg-white dark:bg-gray-900 border-0 p-0 ${
-                isFetching && "hidden"
-              }`}
-              style={{ minHeight: "400px" }}
-            />
+            <div className="relative min-h-[400px] bg-white dark:bg-gray-900">
+              {/* Quill container (empty, Quill owns this) */}
+              <div ref={quillViewerRef} className="ql-snow border-0 p-0" />
 
-            {!lessonData && !isFetching && (
-              <div className="flex flex-col items-center justify-center h-96 text-gray-400 dark:text-gray-500">
-                <BookOpen size={48} className="mb-4 opacity-50" />
-                <p className="text-lg">Select a lesson to start reading</p>
-              </div>
-            )}
+              {/* Overlay placeholder */}
+              {!lessonData && !isFetching && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                  {bookInfo?.coverImage ? (
+                    <Image
+                      src={bookInfo.coverImage}
+                      alt={bookInfo.title}
+                      width={350}
+                      height={50}
+                      className="object-cover rounded-lg shadow-md mb-6"
+                    />
+                  ) : (
+                    <BookOpen
+                      size={64}
+                      className="mb-6 text-gray-400 dark:text-gray-500"
+                    />
+                  )}
+
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                    {bookInfo?.title || "Untitled Book"}
+                  </h1>
+
+                  <p className="text-gray-600 dark:text-gray-400 max-w-md mb-6">
+                    {bookInfo?.description || "No description available."}
+                  </p>
+
+                  <p className="text-blue-600 dark:text-blue-400 font-medium">
+                    Select a lesson from the sidebar to begin reading
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* Previous / Next Buttons */}
             {lessonData && !isFetching && (
