@@ -423,10 +423,17 @@ export default function BookReader({ params }) {
         <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-900 relative">
           <div className="max-w-3xl mx-auto px-4 py-8">
             {isFetching && (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-pulse flex flex-col items-center">
-                  <div className="rounded-full h-12 w-12 bg-gray-200 dark:bg-gray-700 mb-4"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+              <div className="flex justify-center items-center h-64 w-full">
+                <div className="animate-pulse w-full max-w-2xl p-4 space-y-4">
+                  {/* Title */}
+                  <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+
+                  {/* Paragraph */}
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                  </div>
                 </div>
               </div>
             )}
@@ -467,7 +474,11 @@ export default function BookReader({ params }) {
               ))}
 
             {/* Quill Viewer */}
-            <div className="relative h-full min-h-[400px] bg-white dark:bg-gray-900">
+            <div
+              className={`${
+                isFetching && "hidden"
+              } relative h-full min-h-[400px] bg-white dark:bg-gray-900`}
+            >
               {/* Quill container (empty, Quill owns this) */}
               <div
                 ref={quillViewerRef}
