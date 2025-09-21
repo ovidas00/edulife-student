@@ -434,13 +434,16 @@ export default function BookReader({ params }) {
             )}
 
             {/* Quill Viewer */}
-            <div className="relative min-h-[400px] bg-white dark:bg-gray-900">
+            <div className="relative h-full min-h-[400px] bg-white dark:bg-gray-900">
               {/* Quill container (empty, Quill owns this) */}
-              <div ref={quillViewerRef} className="ql-snow border-0 p-0" />
+              <div
+                ref={quillViewerRef}
+                className="ql-snow border-0 p-0 h-full"
+              />
 
               {/* Overlay placeholder */}
               {!lessonData && !isFetching && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                <div className="absolute inset-0 flex flex-col items-center justify-start text-center px-6 py-8">
                   {bookInfo?.coverImage ? (
                     <Image
                       src={bookInfo.coverImage}
@@ -460,7 +463,7 @@ export default function BookReader({ params }) {
                     {bookInfo?.title || "Untitled Book"}
                   </h1>
 
-                  <p className="text-gray-600 dark:text-gray-400 max-w-md mb-6">
+                  <p className="text-gray-600 dark:text-gray-400 max-w-md mb-6 break-words">
                     {bookInfo?.description || "No description available."}
                   </p>
 
