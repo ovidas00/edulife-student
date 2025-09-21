@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Bookmark,
   XCircle,
+  Play,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,13 @@ import "quill/dist/quill.snow.css";
 import api from "@/lib/api";
 import Image from "next/image";
 const Quill = dynamic(() => import("quill"), { ssr: false });
+
+function getYouTubeVideoId(url) {
+  var regExp =
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|\S+\?v=|(?:v|e(?:mbed)?)\/|\S+\/\S+\/)|youtu\.be\/)([\w-]{11})/;
+  var match = url.match(regExp);
+  return match ? match[1] : null;
+}
 
 export default function BookReader({ params }) {
   const { _id: bookId } = React.use(params);
@@ -344,7 +352,11 @@ export default function BookReader({ params }) {
                             }`}
                           >
                             <span className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-xs font-medium mr-2 flex-shrink-0">
-                              {lesson.order}
+                              {lesson.videoUrl ? (
+                                <Play size={14} />
+                              ) : (
+                                lesson.order
+                              )}
                             </span>
                             <span className="truncate">{lesson.title}</span>
                             {currentLessonId === lesson._id && (
@@ -419,19 +431,40 @@ export default function BookReader({ params }) {
               </div>
             )}
 
-            {/* Lesson Title */}
-            {lessonData && !isFetching && (
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full font-medium">
-                    Lesson {lessonData.order}
-                  </span>
+            {/* Lesson Title or Video */}
+            {lessonData &&
+              !isFetching &&
+              (lessonData.videoUrl ? (
+                // Show YouTube video
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="relative pt-[56.25%]">
+                    {" "}
+                    {/* 16:9 Aspect ratio */}
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full rounded-md shadow-md"
+                      src={`https://www.youtube.com/embed/${getYouTubeVideoId(
+                        lessonData.videoUrl
+                      )}?autoplay=1`}
+                      title={lessonData.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
                 </div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  {lessonData.title}
-                </h1>
-              </div>
-            )}
+              ) : (
+                // Show lesson title
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full font-medium">
+                      Lesson {lessonData.order}
+                    </span>
+                  </div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    {lessonData.title}
+                  </h1>
+                </div>
+              ))}
 
             {/* Quill Viewer */}
             <div className="relative h-full min-h-[400px] bg-white dark:bg-gray-900">
