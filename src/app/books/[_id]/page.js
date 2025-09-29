@@ -322,7 +322,7 @@ export default function BookReader({ params }) {
                       onClick={() => toggleModule(module._id)}
                       className="flex items-center justify-between w-full text-left font-medium text-gray-800 dark:text-gray-200 mb-2 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 px-2 -ml-1"
                     >
-                      <span className="flex-1 truncate text-sm">
+                      <span className="flex-1 text-sm line-clamp-3">
                         <span className="text-blue-600 dark:text-blue-400 font-semibold">
                           Module {module.order}:
                         </span>{" "}
