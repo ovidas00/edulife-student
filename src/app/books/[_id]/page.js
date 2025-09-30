@@ -158,6 +158,7 @@ export default function BookReader({ params }) {
           node.setAttribute("controls", true);
           node.setAttribute("src", value);
           node.style.display = "block";
+          node.style.width = "100%";
           node.style.margin = "10px 0";
           return node;
         }
