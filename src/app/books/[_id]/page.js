@@ -147,6 +147,28 @@ export default function BookReader({ params }) {
     if (!quillViewerRef.current || quillInstance.current) return;
 
     import("quill").then(({ default: Quill }) => {
+      const BlockEmbed = Quill.import("blots/block/embed");
+
+      class AudioBlot extends BlockEmbed {
+        static blotName = "audio";
+        static tagName = "audio";
+
+        static create(value) {
+          const node = super.create();
+          node.setAttribute("controls", true);
+          node.setAttribute("src", value);
+          node.style.display = "block";
+          node.style.margin = "10px 0";
+          return node;
+        }
+
+        static value(node) {
+          return node.getAttribute("src");
+        }
+      }
+
+      Quill.register(AudioBlot);
+
       quillInstance.current = new Quill(quillViewerRef.current, {
         theme: "snow",
         readOnly: true,
