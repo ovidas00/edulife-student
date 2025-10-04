@@ -296,9 +296,9 @@ export default function BookReader({ params }) {
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-            <div className="flex items-center">
+            <div className="flex items-center overflow-hidden">
               <BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2" />
-              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 truncate">
+              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 text-wrap">
                 {bookInfo?.title || "Loading..."}
               </h1>
             </div>
