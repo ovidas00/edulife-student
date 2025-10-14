@@ -20,6 +20,7 @@ import {
   CheckCircle,
   Bookmark,
   Download,
+  CodeXml,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import "../globals.css";
@@ -111,6 +112,7 @@ export default function RootLayout({ children }) {
     { icon: CreditCard, label: "Billing", href: "/billing" },
     { icon: Trophy, label: "Rankings", href: "/rankings" },
     { icon: Bookmark, label: "Books", href: "/books" },
+    { icon: CodeXml, label: "Playground", href: "/ide" },
     { icon: User, label: "Profile", href: "/profile" },
   ];
 
