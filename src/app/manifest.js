@@ -1,8 +1,9 @@
 export default function manifest() {
   return {
-    name: "Edulife IT Institute",
-    short_name: "Edulife IT",
-    description: "Nurturing young minds through innovative learning experiences since 2015",
+    name: "Edulife IT - Student Portal",
+    short_name: "Edulife Student",
+    description:
+      "Nurturing young minds through innovative learning experiences since 2015",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
