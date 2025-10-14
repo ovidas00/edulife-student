@@ -274,12 +274,14 @@ export default function RootLayout({ children }) {
                 <Menu size={20} className="text-gray-100 dark:text-gray-300" />
               </button>
               <div className="flex items-center space-x-3">
-                <Image
-                  src="/icon-500x150.png"
-                  alt="Logo"
-                  width={160}
-                  height={120}
-                />
+                <Link href="/">
+                  <Image
+                    src="/icon-500x150.png"
+                    alt="Logo"
+                    width={160}
+                    height={120}
+                  />
+                </Link>
               </div>
             </div>
 
