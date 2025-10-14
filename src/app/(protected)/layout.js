@@ -356,77 +356,64 @@ export default function RootLayout({ children }) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
-                  <h4 className="font-black text-xl mb-4 text-green-500/80 flex items-center gap-2">
-                    <Phone className="h-5 w-5" />
-                    Contact Information
-                  </h4>
-                  <div className="text-slate-300 space-y-1">
+              <div className="flex flex-col md:flex-row md:justify-between gap-4">
+                {/* Contact */}
+                <div className="flex-1 flex items-start gap-3 p-4 bg-slate-800/80 rounded-xl shadow-md border border-slate-700">
+                  <Phone className="h-6 w-6 text-green-400 mt-1" />
+                  <div className="flex flex-col text-slate-300 text-sm space-y-1">
+                    <span className="font-bold text-white">Contact</span>
                     <a
                       href="tel:+8801519575226"
-                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                      className="hover:text-green-400 transition"
                     >
-                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
-                        +8801519575226
-                      </span>
+                      +8801519575226
                     </a>
                     <a
                       href="mailto:edulifetraining@gmail.com"
-                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                      className="hover:text-green-400 transition"
                     >
-                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
-                        edulifetraining@gmail.com
-                      </span>
+                      edulifetraining@gmail.com
                     </a>
                     <a
                       href="https://www.edulifeuniversity.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-2 hover:bg-slate-700/50 rounded-lg transition-colors group"
+                      className="hover:text-green-400 transition"
                     >
-                      <span className="font-medium text-slate-300 group-hover:text-green-400 transition-colors">
-                        www.edulifeuniversity.com
-                      </span>
+                      www.edulifeuniversity.com
                     </a>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
-                  <h4 className="font-black text-xl mb-4 text-secondary flex items-center gap-2 text-green-500/80">
-                    <MapPin className="h-5 w-5" />
-                    Our Location
-                  </h4>
-                  <div className="text-slate-300 space-y-2">
-                    <p className="font-medium">
-                      Shantinagar (Adjacent to BRAC Office)
-                    </p>
-                    <p className="font-medium">Khagrachari, Chittagong</p>
-                    <p className="font-medium">Bangladesh</p>
-                    <div className="mt-3 p-2 bg-slate-700/50 rounded-lg">
-                      <p className="text-sm font-bold text-primary">
-                        Postal Code: 4400
-                      </p>
-                    </div>
+                {/* Location */}
+                <div className="flex-1 flex items-start gap-3 p-4 bg-slate-800/80 rounded-xl shadow-md border border-slate-700">
+                  <MapPin className="h-6 w-6 text-green-400 mt-1" />
+                  <div className="flex flex-col text-slate-300 text-sm space-y-1">
+                    <span className="font-bold text-white">Location</span>
+                    <span>Shantinagar (Adjacent to BRAC Office)</span>
+                    <span>Khagrachari, Chittagong</span>
+                    <span>Bangladesh</span>
+                    <span className="mt-1 inline-block px-2 py-1 bg-slate-700/50 rounded text-xs font-bold text-primary">
+                      Postal Code: 4400
+                    </span>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-6 rounded-xl border border-slate-600">
-                  <h4 className="font-black text-xl mb-4 text-accent flex items-center gap-2 text-green-500/80">
-                    <Clock className="h-5 w-5" />
-                    Office Hours
-                  </h4>
-                  <div className="text-slate-300 space-y-3">
-                    <div className="p-3 bg-slate-700/50 rounded-lg">
-                      <p className="font-bold text-green-400">
-                        Saturday - Thursday
-                      </p>
-                      <p className="text-sm">9:00 AM - 5:00 PM</p>
-                    </div>
-                    <div className="p-3 bg-slate-700/50 rounded-lg">
-                      <p className="font-bold text-green-400">Friday</p>
-                      <p className="text-sm">9:00 AM - 12:00 PM</p>
-                    </div>
+                {/* Office Hours */}
+                <div className="flex-1 flex items-start gap-3 p-4 bg-slate-800/80 rounded-xl shadow-md border border-slate-700">
+                  <Clock className="h-6 w-6 text-green-400 mt-1" />
+                  <div className="flex flex-col text-slate-300 text-sm space-y-1">
+                    <span className="font-bold text-white">Office Hours</span>
+                    <span>
+                      <span className="text-green-400 font-semibold">
+                        Sat - Thu:
+                      </span>{" "}
+                      9:00 AM - 5:00 PM
+                    </span>
+                    <span>
+                      <span className="text-green-400 font-semibold">Fri:</span>{" "}
+                      9:00 AM - 12:00 PM
+                    </span>
                   </div>
                 </div>
               </div>

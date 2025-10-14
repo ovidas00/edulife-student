@@ -23,34 +23,6 @@ const Mentors = () => {
       image:
         "https://www.edulifeitschool.com/assets/462564319_1267897174411048_2389189078393509432_n-bQHTUx4V.jpg",
     },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      role: "Literature Expert",
-      bio: "Specialized in classic and contemporary literature analysis",
-      image: "/api/placeholder/200/200",
-    },
-    {
-      id: 4,
-      name: "David Kim",
-      role: "Computer Science Mentor",
-      bio: "Software engineer with industry experience at top tech companies",
-      image: "/api/placeholder/200/200",
-    },
-    {
-      id: 5,
-      name: "Priya Patel",
-      role: "Biology Researcher",
-      bio: "Molecular biology expert with published research papers",
-      image: "/api/placeholder/200/200",
-    },
-    {
-      id: 6,
-      name: "James Wilson",
-      role: "History Scholar",
-      bio: "Ancient civilizations specialist with archaeological field experience",
-      image: "/api/placeholder/200/200",
-    },
   ];
 
   return (
