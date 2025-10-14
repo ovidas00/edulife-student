@@ -391,10 +391,8 @@ export default function RootLayout({ children }) {
                   <div className="flex flex-col text-slate-300 text-sm space-y-1">
                     <span className="font-bold text-white">Location</span>
                     <span>Shantinagar (Adjacent to BRAC Office)</span>
-                    <span>Khagrachari, Chittagong</span>
-                    <span>Bangladesh</span>
-                    <span className="mt-1 inline-block px-2 py-1 bg-slate-700/50 rounded text-xs font-bold text-primary">
-                      Postal Code: 4400
+                    <span>
+                      Khagrachari, Chittagong, Bangladesh. Postal Code: 4400.
                     </span>
                   </div>
                 </div>
