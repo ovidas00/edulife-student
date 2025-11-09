@@ -41,14 +41,14 @@ export default function TabbedEditor() {
   return (
     <div className="p-4 md:p-6">
       {/* Tabs for all devices */}
-      <div className="flex mb-4 border-b border-gray-300 dark:border-gray-600">
+      <div className="flex mb-4 border-b border-gray-200 dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab}
-            className={`flex-1 py-2 text-center ${
+            className={`flex-1 py-3 text-center cursor-pointer transition-all duration-200 ${
               activeTab === tab
-                ? "border-b-2 border-blue-500 font-semibold"
-                : ""
+                ? "border-b-2 border-blue-500 text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800/50 border-b-2 border-transparent"
             }`}
             onClick={() => setActiveTab(tab)}
           >
@@ -58,7 +58,7 @@ export default function TabbedEditor() {
       </div>
 
       {/* Tab Content */}
-      <div className="border border-gray-300 dark:border-gray-600 rounded">
+      <div className="border border-gray-300 dark:border-gray-600 rounded overflow-hidden">
         {activeTab === "html" && (
           <CodeMirror
             value={htmlCode}
