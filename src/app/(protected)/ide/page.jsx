@@ -39,9 +39,9 @@ export default function TabbedEditor() {
   `;
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-0">
       {/* Tabs for all devices */}
-      <div className="flex mb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex border-b border-gray-200 dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -58,7 +58,7 @@ export default function TabbedEditor() {
       </div>
 
       {/* Tab Content */}
-      <div className="border border-gray-300 dark:border-gray-600 rounded overflow-hidden">
+      <div>
         {activeTab === "html" && (
           <CodeMirror
             value={htmlCode}
